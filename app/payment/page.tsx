@@ -1,4 +1,4 @@
-import { Box, Container, Stack } from "../lib/mui";
+import { Box, Container, Stack } from "../mui/mui";
 import React from "react";
 import TaxBeneficientPayment from "./TaxBeneficientPayment";
 

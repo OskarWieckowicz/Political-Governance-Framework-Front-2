@@ -1,9 +1,17 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 import React, { useState } from "react";
-import { Box, Button, Paper, Stack, Typography } from "../lib/mui";
+import { Box, Button, Paper, Stack, Typography } from "../mui/mui";
 import TaxBeneficient from "./TaxBeneficient";
+import { useSession } from "next-auth/react";
 const TaxesDashboard = () => {
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/api/auth/signin");
+    },
+  });
+  console.log(session);
   const [education, setEducation] = useState(30);
   const [healthCare, setHealthCare] = useState(50);
   const [ue, setUE] = useState(20);

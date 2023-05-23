@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Paper, Stack, Typography } from "../lib/mui";
+import { Box, Button, Paper, Stack, Typography } from "../mui/mui";
 
 interface Props {
   name: string;

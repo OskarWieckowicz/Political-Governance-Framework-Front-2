@@ -1,6 +1,6 @@
 import React from "react";
-import { AddIcon, RemoveIcon, AddOutlinedIcon } from "../lib/mui-icons";
-import { Box, IconButton, Paper, Typography } from "../lib/mui";
+import { AddIcon, RemoveIcon, AddOutlinedIcon } from "../mui/mui-icons";
+import { Box, IconButton, Paper, Typography } from "../mui/mui";
 
 interface Props {
   name: string;
