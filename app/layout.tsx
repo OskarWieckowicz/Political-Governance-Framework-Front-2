@@ -6,7 +6,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import Provider from "./components/Provider";
-
+import { Toolbar } from "./mui/mui";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -24,6 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           <Navbar />
+          <Toolbar />
           <div>{children}</div>
         </Provider>
       </body>
