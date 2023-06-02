@@ -13,15 +13,20 @@ import {
   Toolbar,
   Typography,
 } from "../mui/mui";
-import { InboxIcon, MailIcon } from "../mui/mui-icons";
+import {
+  FolderSharedIcon,
+  HistoryIcon,
+  InboxIcon,
+  MailIcon,
+} from "../mui/mui-icons";
 import Link from "next/link";
 const drawerWidth = 240;
 
 export default function ClippedDrawer({ children }) {
   const nav = [
-    { label: "Documents", url: "/documents" },
-    { label: "Declaration", url: "/declaration" },
-    { label: "History", url: "/history" },
+    { label: "Documents", url: "/documents", icon: <FolderSharedIcon /> },
+    { label: "Declaration", url: "/declaration", icon: <MailIcon /> },
+    { label: "History", url: "/history", icon: <HistoryIcon /> },
   ];
   return (
     <Box sx={{ display: "flex" }}>
@@ -44,9 +49,7 @@ export default function ClippedDrawer({ children }) {
               <Link key={text.label} href={text.url}>
                 <ListItem key={text.label} disablePadding>
                   <ListItemButton>
-                    <ListItemIcon>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                    </ListItemIcon>
+                    <ListItemIcon>{text.icon}</ListItemIcon>
                     <ListItemText primary={text.label} />
                   </ListItemButton>
                 </ListItem>

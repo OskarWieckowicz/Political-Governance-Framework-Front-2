@@ -1,6 +1,10 @@
 "use client";
 import * as React from "react";
-import { AdbIcon, MenuIcon, KeyboardArrowDownIcon } from "../mui/mui-icons";
+import {
+  AccountBalanceIcon,
+  MenuIcon,
+  KeyboardArrowDownIcon,
+} from "../mui/mui-icons";
 import { useRouter, redirect } from "next/navigation";
 import {
   AppBar,
@@ -57,6 +61,11 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
+  const handlePageNav = (url) => {
+    handleCloseUserMenu();
+    router.push(url);
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -64,12 +73,13 @@ function Navbar() {
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <AccountBalanceIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+          />
           <Link href="/">
             <Typography
               variant="h6"
               noWrap
-              component="a"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -80,7 +90,7 @@ function Navbar() {
                 textDecoration: "none",
               }}
             >
-              LOGO
+              PGF
             </Typography>
           </Link>
 
@@ -114,20 +124,22 @@ function Navbar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.label} onClick={handleCloseNavMenu}>
-                  <Link href={page.link}>
-                    <Typography textAlign="center">{page.label}</Typography>
-                  </Link>
+                <MenuItem
+                  key={page.label}
+                  onClick={() => handlePageNav(page.link)}
+                >
+                  <Typography textAlign="center">{page.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <AccountBalanceIcon
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+          />
           <Link href="/">
             <Typography
               variant="h5"
               noWrap
-              component="a"
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -144,13 +156,11 @@ function Navbar() {
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page.label}
-                onClick={() => router.push(page.link)}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page.label}
-              </Button>
+              <Link key={page.label} href={page.link}>
+                <Button sx={{ my: 2, color: "white", display: "block" }}>
+                  {page.label}
+                </Button>
+              </Link>
             ))}
           </Box>
 
@@ -180,10 +190,8 @@ function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Link href="/profile">
-                  <Typography textAlign="center">Profile</Typography>
-                </Link>
+              <MenuItem href="/profile">
+                <Typography textAlign="center">Profile</Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">Settings</Typography>

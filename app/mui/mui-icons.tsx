@@ -7,7 +7,9 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import HistoryIcon from "@mui/icons-material/History";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 export {
   AdbIcon,
   MenuIcon,
@@ -17,4 +19,7 @@ export {
   KeyboardArrowDownIcon,
   InboxIcon,
   MailIcon,
+  FolderSharedIcon,
+  HistoryIcon,
+  AccountBalanceIcon,
 };
