@@ -8,6 +8,7 @@ import {
   CardMedia,
   Container,
   Grid,
+  Rating,
   Typography,
 } from "../mui/mui";
 import Link from "next/link";
@@ -94,10 +95,11 @@ const TaxBeneficientsPage = () => {
                   </Typography>
                   <Typography>{card.description}</Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{ justifyContent: "space-between" }}>
                   <Link href={"/tax-beneficients/" + card.name}>
                     <Button size="small">View more</Button>
                   </Link>
+                  <Rating name="half-rating" defaultValue={0} precision={0.5} />
                 </CardActions>
               </Card>
             </Grid>

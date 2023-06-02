@@ -6,12 +6,13 @@ import {
   CardMedia,
   Container,
   Grid,
+  Stack,
   Typography,
 } from "../../mui/mui";
-import Image from "next/image";
-import Chart from "./Chart";
+import CashFlowChart from "./ChashFlowChart";
+import SatisfactionChart from "./SatisfactionChart";
+
 const BeneficientPage = ({ params }) => {
-  console.log(params);
   return (
     <Container sx={{ padding: "15px" }}>
       <Card>
@@ -59,7 +60,7 @@ const BeneficientPage = ({ params }) => {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Typography>Klaus Shwab</Typography>
+                <Typography>Ursula von der Leyen</Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography sx={{ fontWeight: "bold" }}>
@@ -72,15 +73,30 @@ const BeneficientPage = ({ params }) => {
                 </Typography>
               </Grid>
               <Grid item xs={4}>
-                <Typography sx={{ fontWeight: "bold" }}>Saldo:</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>Balance:</Typography>
               </Grid>
               <Grid item xs={8}>
                 <Typography>124414.1151 ETH</Typography>
               </Grid>
+              <Grid item xs={4}>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  Citizens satisfaction:
+                </Typography>
+              </Grid>
+              <Grid item xs={8}>
+                <Typography>2.98 / 5</Typography>
+              </Grid>
             </Grid>
           </Container>
           <Container maxWidth="md" sx={{ marginTop: "20px" }}>
-            <Chart />
+            <Typography variant="h5" align="center" marginTop="30px">
+              Cash flow
+            </Typography>
+            <CashFlowChart />
+            <Typography variant="h5" align="center" marginTop="30px">
+              Citizens satisfaction
+            </Typography>
+            <SatisfactionChart />
           </Container>
         </CardContent>
       </Card>
