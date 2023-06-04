@@ -48,7 +48,7 @@ const DeclarationPage = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent>
           <Typography gutterBottom variant="h6">
-            Please provide your reveneu and expense:
+            Please provide your revenue and expense:
           </Typography>
           <Box
             sx={{
@@ -172,7 +172,7 @@ const DeclarationPage = () => {
   };
 
   return (
-    <Container sx={{ padding: "15px" }}>
+    <Container>
       <Card>
         <CardHeader title={`Tax return for ${month}`} />
         <Divider />
