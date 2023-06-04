@@ -10,6 +10,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import HistoryIcon from "@mui/icons-material/History";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import EditIcon from "@mui/icons-material/Edit";
 export {
   AdbIcon,
   MenuIcon,
@@ -22,4 +23,5 @@ export {
   FolderSharedIcon,
   HistoryIcon,
   AccountBalanceIcon,
+  EditIcon,
 };

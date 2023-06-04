@@ -14,7 +14,6 @@ import {
   Typography,
   Menu,
   Container,
-  Avatar,
   Button,
   Tooltip,
   MenuItem,
@@ -23,7 +22,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 const pages = [
-  { label: "Tax Return", link: "/documents" },
+  { label: "Tax Return", link: "/declaration" },
   { label: "Tax Beneficients", link: "/tax-beneficients" },
   { label: "Payment", link: "/payment" },
 ];

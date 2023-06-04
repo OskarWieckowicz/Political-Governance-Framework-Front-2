@@ -24,8 +24,8 @@ const drawerWidth = 240;
 
 export default function ClippedDrawer({ children }) {
   const nav = [
-    { label: "Documents", url: "/documents", icon: <FolderSharedIcon /> },
     { label: "Declaration", url: "/declaration", icon: <MailIcon /> },
+    { label: "Documents", url: "/documents", icon: <FolderSharedIcon /> },
     { label: "History", url: "/history", icon: <HistoryIcon /> },
   ];
   return (
