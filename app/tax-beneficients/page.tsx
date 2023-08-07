@@ -13,39 +13,23 @@ import {
 } from "../mui/mui";
 import Link from "next/link";
 
-const cards = [
-  {
-    name: "Education",
-    description:
-      "Support public education initiatives and programs aimed at providing quality education to students.",
-    img: "/education.jpg",
-  },
-  {
-    name: "Health Care",
-    description:
-      "Contribute to public healthcare services and initiatives that improve access to medical care and promote well-being.",
-    img: "/health-care.jpg",
-  },
-  {
-    name: "European Union",
-    description:
-      "Show your support for the European Union and its efforts towards economic integration, peace, and cooperation among member countries.",
-    img: "/eu.jpg",
-  },
-  {
-    name: "Army",
-    description:
-      " Contribute to the defense and security of the nation by supporting the armed forces and their missions.",
-    img: "/army.jpg",
-  },
-  {
-    name: "Ministry of Infrastructure",
-    description:
-      "Support the development and maintenance of national infrastructure projects, such as roads, bridges, and public transportation systems.",
-    img: "/infrastructure.jpg",
-  },
-];
-const TaxBeneficientsPage = () => {
+interface TaxBeneficiary {
+  name: string;
+  description: string;
+  img: string;
+  rating: number;
+}
+async function getData() {
+  const res = await fetch("http://localhost:8080/taxBeneficiaries");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+const TaxBeneficientsPage = async () => {
+  const cards: TaxBeneficiary[] = await getData();
   return (
     <Box>
       <Container maxWidth="sm">
@@ -70,7 +54,6 @@ const TaxBeneficientsPage = () => {
         </Typography>
       </Container>
       <Container sx={{ py: 8 }} maxWidth="md">
-        {/* End hero unit */}
         <Grid container spacing={4}>
           {cards.map((card) => (
             <Grid item key={card.name} xs={12} sm={6} md={4}>
@@ -99,7 +82,11 @@ const TaxBeneficientsPage = () => {
                   <Link href={"/tax-beneficients/" + card.name}>
                     <Button size="small">View more</Button>
                   </Link>
-                  <Rating name="half-rating" defaultValue={0} precision={0.5} />
+                  <Rating
+                    name="half-rating"
+                    defaultValue={card.rating}
+                    precision={0.5}
+                  />
                 </CardActions>
               </Card>
             </Grid>

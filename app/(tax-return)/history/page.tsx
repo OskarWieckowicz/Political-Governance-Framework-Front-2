@@ -18,15 +18,28 @@ function createData(
   return { date, revenue, expense, income, taxes };
 }
 
-const rows = [
-  createData("05.2020", 1200, 213, 24, 5),
-  createData("06.2020", 3000, 112, 24, 3),
-  createData("07.2020", 1501, 123, 24, 2),
-  createData("08.2020", 4514, 133, 24, 1),
-  createData("09.2020", 12331, 123, 24, 3),
-];
+interface History {
+  billingPeriod: string;
+  revenue: number;
+  expense: number;
+  income: number;
+  taxes: number;
+}
+async function getData() {
+  const res = await fetch("http://localhost:8080/declaration/history", {
+    cache: "no-store",
+  });
 
-const HistoryPage = () => {
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+const HistoryPage = async () => {
+  const rows: History[] = await getData();
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -42,11 +55,11 @@ const HistoryPage = () => {
         <TableBody>
           {rows.map((row) => (
             <TableRow
-              key={row.date}
+              key={row.billingPeriod}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.date}
+                {row.billingPeriod}
               </TableCell>
               <TableCell align="center">{row.revenue}</TableCell>
               <TableCell align="center">{row.expense}</TableCell>

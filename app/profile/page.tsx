@@ -14,20 +14,20 @@ interface Profile {
   mail: string;
   phone: string;
 }
-const ProfilePage = () => {
-  const user: Profile = {
-    firstName: "Oskar",
-    lastName: "Więckowicz",
-    taxId: "19823714912",
-    address: {
-      country: "Poland",
-      city: "Kielce",
-      street: "Śliczna 44/12",
-      postalCode: "50-123",
-    },
-    mail: "oskar123@gmail.com",
-    phone: "123123123",
-  };
+async function getProfile() {
+  const res = await fetch("http://localhost:8080/users", {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+const ProfilePage = async () => {
+  const user: Profile = await getProfile();
   return (
     <Container>
       <Typography marginBottom="10px" marginTop="10px" variant="h4">
