@@ -20,7 +20,7 @@ interface TaxBeneficiary {
   rating: number;
 }
 async function getData() {
-  const res = await fetch("http://localhost:8080/taxBeneficiaries");
+  const res = await fetch(`${process.env.BACKEND_URL}/taxBeneficiaries`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");

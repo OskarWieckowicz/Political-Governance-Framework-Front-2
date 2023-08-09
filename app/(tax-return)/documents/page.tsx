@@ -25,13 +25,15 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 type TableData = {
   date: Dayjs;
   amount: number;
   type: string;
   document: string;
 };
-const DocumentsPage: React.FC = () => {
+const DocumentsPage: React.FC = async () => {
   const { control, register, handleSubmit, reset } = useForm<TableData>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -61,8 +63,26 @@ const DocumentsPage: React.FC = () => {
     setIsDialogOpen(false);
   };
 
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/api/auth/signin");
+    },
+  });
+  // console.log(session);
+
+  const handleHello = async () => {
+    const res = await fetch("http://localhost:8081/users", {
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${session.accessToken}`,
+      },
+    });
+  };
+
   return (
     <>
+      <Button onClick={handleHello}>Hello</Button>
       <Button onClick={handleOpenDialog} variant="contained" color="primary">
         Add Document
       </Button>

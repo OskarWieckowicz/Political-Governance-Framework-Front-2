@@ -35,6 +35,7 @@ function Navbar() {
       redirect("/api/auth/signin");
     },
   });
+  // console.log(session);
 
   const router = useRouter();
 

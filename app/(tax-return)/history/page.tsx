@@ -26,7 +26,7 @@ interface History {
   taxes: number;
 }
 async function getData() {
-  const res = await fetch("http://localhost:8080/declaration/history", {
+  const res = await fetch(`${process.env.BACKEND_URL}/declaration/history`, {
     cache: "no-store",
   });
 

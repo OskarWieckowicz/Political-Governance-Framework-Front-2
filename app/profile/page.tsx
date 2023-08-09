@@ -15,7 +15,7 @@ interface Profile {
   phone: string;
 }
 async function getProfile() {
-  const res = await fetch("http://localhost:8080/users", {
+  const res = await fetch(`${process.env.BACKEND_URL}/users`, {
     cache: "no-store",
   });
 
