@@ -8,6 +8,8 @@ import {
   TableHead,
   TableRow,
 } from "../../mui/mui";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 function createData(
   date: string,
   revenue: number,
@@ -26,8 +28,13 @@ interface History {
   taxes: number;
 }
 async function getData() {
+  const session = await getServerSession(authOptions);
+
   const res = await fetch(`${process.env.BACKEND_URL}/declaration/history`, {
     cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`,
+    },
   });
 
   if (!res.ok) {

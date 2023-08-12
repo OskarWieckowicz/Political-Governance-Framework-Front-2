@@ -20,6 +20,7 @@ import {
 } from "../mui/mui";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 const pages = [
   { label: "Tax Return", link: "/declaration" },
@@ -35,7 +36,12 @@ function Navbar() {
       redirect("/api/auth/signin");
     },
   });
-  // console.log(session);
+  console.log(session);
+  useEffect(() => {
+    if (session?.error === "RefreshAccessTokenError") {
+      signIn(); // Force sign in to hopefully resolve error
+    }
+  }, [session]);
 
   const router = useRouter();
 

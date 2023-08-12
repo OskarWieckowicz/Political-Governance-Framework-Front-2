@@ -12,6 +12,8 @@ import {
   Typography,
 } from "../mui/mui";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 interface TaxBeneficiary {
   name: string;
@@ -20,7 +22,13 @@ interface TaxBeneficiary {
   rating: number;
 }
 async function getData() {
-  const res = await fetch(`${process.env.BACKEND_URL}/taxBeneficiaries`);
+  const session = await getServerSession(authOptions);
+  const res = await fetch(`${process.env.BACKEND_URL}/taxBeneficiaries`, {
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`,
+    },
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");

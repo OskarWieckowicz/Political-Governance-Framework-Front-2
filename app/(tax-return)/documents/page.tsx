@@ -69,7 +69,6 @@ const DocumentsPage: React.FC = async () => {
       redirect("/api/auth/signin");
     },
   });
-  // console.log(session);
 
   const handleHello = async () => {
     const res = await fetch("http://localhost:8081/users", {
@@ -78,6 +77,7 @@ const DocumentsPage: React.FC = async () => {
         Authorization: `Bearer ${session.accessToken}`,
       },
     });
+    console.log(await res.json());
   };
 
   return (
