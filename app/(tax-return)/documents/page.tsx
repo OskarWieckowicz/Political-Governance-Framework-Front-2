@@ -1,131 +1,42 @@
-"use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Paper,
-  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
-  Typography,
 } from "../../mui/mui";
 import Link from "next/link";
 import { PictureAsPdfIcon } from "@/app/mui/mui-icons";
-import { useForm, Controller } from "react-hook-form";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs, { Dayjs } from "dayjs";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-type TableData = {
-  date: Dayjs;
-  amount: number;
-  type: string;
-  document: string;
-};
-const DocumentsPage: React.FC = async () => {
-  const { control, register, handleSubmit, reset } = useForm<TableData>();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { DocumentData } from "./DocumentData";
+import AddDocument from "./AddDocument";
 
-  const [data, setData] = useState<TableData[]>([
-    {
-      date: dayjs(new Date(2018, 8, 18)),
-      amount: 123,
-      type: "revenue",
-      document: "example.pdf",
-    },
-    // Add more data rows here if needed
-  ]);
-
-  const onSubmit = (formData: TableData) => {
-    setData([...data, formData]);
-    console.log(data);
-
-    reset();
-    setIsDialogOpen(false);
-  };
-
-  const handleOpenDialog = () => {
-    setIsDialogOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-  };
-
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      redirect("/api/auth/signin");
+const getData = async () => {
+  const session = await getServerSession(authOptions);
+  const res = await fetch("http://localhost:8081/documents", {
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`,
     },
   });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
 
-  const handleHello = async () => {
-    const res = await fetch("http://localhost:8081/users", {
-      cache: "no-store",
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-    });
-    console.log(await res.json());
-  };
+  return res.json();
+};
 
+const DocumentsPage = async () => {
+  const data = await getData();
+  console.log(data);
   return (
     <>
-      <Button onClick={handleHello}>Hello</Button>
-      <Button onClick={handleOpenDialog} variant="contained" color="primary">
-        Add Document
-      </Button>
-
-      <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
-        <DialogTitle>Add Document</DialogTitle>
-        <DialogContent>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Stack spacing={2} padding="10px">
-                <Controller
-                  name="date"
-                  control={control}
-                  defaultValue={null}
-                  render={({ field }) => (
-                    <DatePicker
-                      label="Date"
-                      value={field.value}
-                      onChange={(newValue) => field.onChange(newValue)}
-                      slotProps={{ textField: { variant: "outlined" } }}
-                    />
-                  )}
-                />
-                <TextField
-                  label="Amount"
-                  {...register("amount")}
-                  type="number"
-                />
-                <TextField label="Type" {...register("type")} />
-                <TextField label="Document" {...register("document")} />
-              </Stack>
-            </form>
-          </LocalizationProvider>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit(onSubmit)} color="primary">
-            Add
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <AddDocument />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -139,11 +50,11 @@ const DocumentsPage: React.FC = async () => {
           <TableBody>
             {data.map((row, index) => (
               <TableRow key={index}>
-                <TableCell>{row.date.format("DD/MM/YYYY")}</TableCell>
+                <TableCell>{row.date}</TableCell>
                 <TableCell>{row.amount}</TableCell>
                 <TableCell>{row.type}</TableCell>
                 <TableCell>
-                  <Link href={row.document} target="_blank" rel="noopener">
+                  <Link href={"/hi"} target="_blank" rel="noopener">
                     <Box
                       sx={{
                         display: "flex",
@@ -151,7 +62,7 @@ const DocumentsPage: React.FC = async () => {
                       }}
                     >
                       <PictureAsPdfIcon />
-                      {row.document}
+                      {row.file}
                     </Box>
                   </Link>
                 </TableCell>

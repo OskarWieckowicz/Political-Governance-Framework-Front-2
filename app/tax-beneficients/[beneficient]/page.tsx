@@ -11,6 +11,8 @@ import {
 } from "../../mui/mui";
 import CashFlowChart from "./ChashFlowChart";
 import SatisfactionChart from "./SatisfactionChart";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 interface BeneficiaryDetails {
   image: string;
   name: string;
@@ -22,9 +24,16 @@ interface BeneficiaryDetails {
   citizensSatisfaction: number;
 }
 
-const getData = async () => {
+const getData = async (params) => {
+  const session = await getServerSession(authOptions);
   const res = await fetch(
-    `${process.env.BACKEND_URL}/taxBeneficiaries/details/Education`
+    `${process.env.BACKEND_URL}/taxBeneficiaries/details/${params.beneficient}`,
+    {
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+    }
   );
 
   if (!res.ok) {
@@ -34,30 +43,8 @@ const getData = async () => {
   return res.json();
 };
 
-const beneficiary: BeneficiaryDetails = {
-  image: "/eu.img",
-  name: "European Union",
-  description: `            The main and central goal of EU development cooperation is the
-  eradication of poverty in the context of sustainable development,
-  including the pursuit of the 2030 Agenda for Sustainable Development
-  and its Sustainable Development Goals (SDGs) adopted in 2015 by the
-  United Nations. The EU, together with its Member States, is the
-  largest donor of Official Development Assistance (ODA) in the
-  world[1]. In 2021, the Community together with the Member States
-  (Team Europe) financed over 4,355% of aid on a global scale[2]. The
-  general budget and the European Development Fund (EDF) finance
-  approximately 20% of EU expenditure on development assistance. The
-  rest are Member States' initiatives implemented under national aid
-  schemes. The EU institutions and Member States have committed to
-  jointly achieving an ODA/GNI ratio of 0.7% by 2030.`,
-  site: "https://european-union.europa.eu/",
-  leader: "Ursula von der Leyen",
-  smartContractAddress:
-    "0x06f333ca1c1b3d08f487d67a5a377cb92d3695ba85d4cc30855733d6a160caba",
-  balance: 124414.1151,
-  citizensSatisfaction: 2.98,
-};
-const BeneficientPage = ({ params }) => {
+const BeneficientPage = async ({ params }) => {
+  const beneficiary: BeneficiaryDetails = await getData(params);
   return (
     <Container sx={{ padding: "15px" }}>
       <Card>
@@ -68,7 +55,7 @@ const BeneficientPage = ({ params }) => {
             pt: "56.25%",
           }}
           image={beneficiary.image}
-          title="green iguana"
+          title="organization image"
         />
         <CardContent sx={{ flexGrow: 1 }}>
           <Typography gutterBottom variant="h3" component="h2">

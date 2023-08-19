@@ -10,15 +10,6 @@ import {
 } from "../../mui/mui";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-function createData(
-  date: string,
-  revenue: number,
-  expense: number,
-  income: number,
-  taxes: number
-) {
-  return { date, revenue, expense, income, taxes };
-}
 
 interface History {
   billingPeriod: string;

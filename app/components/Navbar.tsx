@@ -36,7 +36,7 @@ function Navbar() {
       redirect("/api/auth/signin");
     },
   });
-  console.log(session);
+
   useEffect(() => {
     if (session?.error === "RefreshAccessTokenError") {
       signIn(); // Force sign in to hopefully resolve error
