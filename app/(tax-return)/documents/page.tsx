@@ -33,7 +33,6 @@ const getData = async () => {
 
 const DocumentsPage = async () => {
   const data = await getData();
-  console.log(data);
   return (
     <>
       <AddDocument />

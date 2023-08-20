@@ -7,35 +7,93 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  CardMedia,
   Container,
   Divider,
-  Grid,
-  IconButton,
-  Stack,
   TextField,
   Typography,
 } from "../../mui/mui";
-import { EditIcon } from "../../mui/mui-icons";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { Declaration } from "./Declaration";
+
+type DeclarationFormData = {
+  revenue: number;
+  expense: number;
+};
+
+async function getData(session): Promise<Declaration> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/declaration`,
+    {
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+    }
+  );
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+async function postData(
+  session,
+  payload: DeclarationFormData
+): Promise<Declaration> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/declaration`,
+    {
+      method: "PUT",
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
 
 const DeclarationPage = () => {
+  const [isSubmitted, setIsSubmited] = useState(false);
+  const [declaration, setDeclaration] = useState<Declaration>();
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/api/auth/signin");
+    },
+  });
+
+  useEffect(() => {
+    if (session) {
+      getData(session).then((response: Declaration) => {
+        setDeclaration(response);
+        if (response.billingPeriod) {
+          setIsSubmited(true);
+        }
+      });
+    }
+  }, [session]);
+
   const month = "May";
-  const { handleSubmit, register, watch } = useForm({
+  const { handleSubmit, register } = useForm({
     defaultValues: {
       revenue: 0,
       expense: 0,
     },
   });
-  const [isSubmitted, setIsSubmited] = useState(false);
-  const [income, setIncome] = useState(0);
-  const [taxesAmount, setTaxesAmount] = useState(0);
 
-  const onSubmit = (data) => {
-    console.log(data); // handle form submission logic here
-    const calculatedIncome: number = watch("revenue") - watch("expense");
-    setIncome(calculatedIncome);
-    setTaxesAmount(0.12 * calculatedIncome);
+  const onSubmit = async (formData: DeclarationFormData) => {
+    const resp = await postData(session, formData);
+    setDeclaration(resp);
     setIsSubmited(true);
   };
 
@@ -66,7 +124,9 @@ const DeclarationPage = () => {
               inputProps={{
                 step: "0.01",
               }}
-              {...register("revenue")}
+              {...register("revenue", {
+                valueAsNumber: true,
+              })}
               margin="normal"
             />
           </Box>
@@ -86,7 +146,9 @@ const DeclarationPage = () => {
               inputProps={{
                 step: "0.01",
               }}
-              {...register("expense")}
+              {...register("expense", {
+                valueAsNumber: true,
+              })}
               margin="normal"
             />
           </Box>
@@ -117,7 +179,7 @@ const DeclarationPage = () => {
             <Typography variant="body1" marginRight="20px">
               Revenue:
             </Typography>
-            <Typography variant="body1">{watch("revenue")}</Typography>
+            <Typography variant="body1">{declaration?.revenue}</Typography>
           </Box>
           <Box
             sx={{
@@ -129,7 +191,7 @@ const DeclarationPage = () => {
             <Typography variant="body1" marginRight="20px">
               Expense:
             </Typography>
-            <Typography variant="body1">{watch("expense")}</Typography>
+            <Typography variant="body1">{declaration?.expense}</Typography>
           </Box>
           <Box
             sx={{
@@ -141,7 +203,7 @@ const DeclarationPage = () => {
             <Typography variant="body1" marginRight="20px">
               Income:
             </Typography>
-            <Typography variant="body1">{income}</Typography>
+            <Typography variant="body1">{declaration?.income}</Typography>
           </Box>
           <Box
             sx={{
@@ -154,7 +216,7 @@ const DeclarationPage = () => {
               Taxes to pay (12%):
             </Typography>
             <Typography color="#2eeb21" variant="h4">
-              {taxesAmount}
+              {declaration?.taxes}
             </Typography>
           </Box>
         </CardContent>
