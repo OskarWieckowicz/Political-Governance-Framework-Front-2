@@ -62,7 +62,14 @@ async function postData(
   return res.json();
 }
 
+function getPreviousMonth(): string {
+  const previousMonth = new Date();
+  previousMonth.setMonth(previousMonth.getMonth() - 1);
+  return previousMonth.toLocaleString("default", { month: "long" });
+}
+
 const DeclarationPage = () => {
+  const prevMonth = getPreviousMonth();
   const [isSubmitted, setIsSubmited] = useState(false);
   const [declaration, setDeclaration] = useState<Declaration>();
   const { data: session } = useSession({
@@ -236,7 +243,7 @@ const DeclarationPage = () => {
   return (
     <Container>
       <Card>
-        <CardHeader title={`Tax return for ${month}`} />
+        <CardHeader title={`Tax return for ${prevMonth}`} />
         <Divider />
         {isSubmitted ? submittedView() : formView()}
       </Card>
