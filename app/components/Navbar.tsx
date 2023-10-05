@@ -39,7 +39,7 @@ function Navbar() {
 
   useEffect(() => {
     if (session?.error === "RefreshAccessTokenError") {
-      signIn(); // Force sign in to hopefully resolve error
+      signIn();
     }
   }, [session]);
 
@@ -196,8 +196,10 @@ function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem href="/profile">
-                <Typography textAlign="center">Profile</Typography>
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Link href="/profile">
+                  <Typography textAlign="center">Profile</Typography>
+                </Link>
               </MenuItem>
               <MenuItem onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">Settings</Typography>
