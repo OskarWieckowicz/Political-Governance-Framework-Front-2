@@ -39,7 +39,7 @@ async function getData(session): Promise<Declaration> {
   return res.json();
 }
 
-async function postData(
+async function putData(
   session,
   payload: DeclarationFormData
 ): Promise<Declaration> {
@@ -99,7 +99,7 @@ const DeclarationPage = () => {
   });
 
   const onSubmit = async (formData: DeclarationFormData) => {
-    const resp = await postData(session, formData);
+    const resp = await putData(session, formData);
     setDeclaration(resp);
     setIsSubmited(true);
   };

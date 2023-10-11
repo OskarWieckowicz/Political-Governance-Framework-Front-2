@@ -26,6 +26,7 @@ const refreshAccessToken = async (token) => {
       body: formData,
     });
     const refreshedTokens = await response.json();
+    console.log(refreshedTokens);
     if (!response.ok) throw refreshedTokens;
     return {
       ...token,
