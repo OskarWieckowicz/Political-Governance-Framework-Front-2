@@ -12,7 +12,7 @@ import {
   Typography,
   InputAdornment,
 } from "../mui/mui";
-import { TaxDistribution } from "./TaxDistribution";
+import { TaxDistribution } from "../models/TaxDistribution";
 
 interface Props {
   distributions: TaxDistribution[];

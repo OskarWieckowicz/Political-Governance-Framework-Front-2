@@ -13,7 +13,7 @@ import Link from "next/link";
 import { PictureAsPdfIcon } from "@/app/mui/mui-icons";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { DocumentData } from "./DocumentData";
+import { DocumentData } from "../../models/DocumentData";
 import AddDocument from "./AddDocument";
 
 const getData = async () => {

@@ -15,7 +15,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { Declaration } from "./Declaration";
+import { Declaration } from "../../models/Declaration";
 
 type DeclarationFormData = {
   revenue: number;

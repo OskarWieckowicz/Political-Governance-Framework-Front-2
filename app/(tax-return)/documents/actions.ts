@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { DocumentData } from "./DocumentData";
+import { DocumentData } from "../../models/DocumentData";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { DocumentEntrySchema } from "./schema";

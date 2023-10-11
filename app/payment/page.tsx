@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { TaxesDistributionDeclaration } from "./TaxesDistributionDeclaration";
+import { TaxesDistributionDeclaration } from "../models/TaxesDistributionDeclaration";
 import TaxesDistibutionForm from "./TaxesDistibutionForm";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import PaymentView from "./PaymentView";
 import { Box, CircularProgress } from "../mui/mui";
-import { TaxDistribution } from "./TaxDistribution";
+import { TaxDistribution } from "../models/TaxDistribution";
 
 async function getData(session): Promise<TaxesDistributionDeclaration> {
   const res = await fetch(
