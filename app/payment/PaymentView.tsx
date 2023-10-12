@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
+  Box,
   Button,
+  CircularProgress,
   Container,
   Paper,
   Table,
@@ -10,31 +12,59 @@ import {
   TableHead,
   TableRow,
 } from "../mui/mui";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { Payment } from "../models/Payment";
 
-const paymentSummaries: Summary[] = [
-  {
-    percentage: 10,
-    destination: "Education",
-    address: "0xaE4D837cAA0C53579f8a156633355Df5058B02f3",
-    toBePaid: 0.3,
-    paid: 0.1,
-  },
-  {
-    percentage: 30,
-    destination: "Health Care",
-    address: "0xaE4D837cAA0C53579f8a156633355Df5058B02f3",
-    toBePaid: 0.5,
-    paid: 0.1,
-  },
-  {
-    percentage: 60,
-    destination: "UE",
-    address: "0xaE4D837cAA0C53579f8a156633355Df5058B02f3",
-    toBePaid: 0.2,
-    paid: 0.1,
-  },
-];
+async function getData(session): Promise<Payment[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payments`, {
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`,
+    },
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+const weiToEth = (wei) => {
+  const ethValue = wei / 1e18;
+  return ethValue.toFixed(4);
+};
+
 const PaymentView = () => {
+  const [payments, setPayments] = useState<Payment[]>();
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/api/auth/signin");
+    },
+  });
+
+  useEffect(() => {
+    if (session) {
+      getData(session).then((response: Payment[]) => {
+        setPayments(response);
+      });
+    }
+  }, [session]);
+
+  if (!payments) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "50px",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Container sx={{ marginTop: "15px" }}>
       <TableContainer component={Paper}>
@@ -43,21 +73,21 @@ const PaymentView = () => {
             <TableRow>
               <TableCell align="center">Destination</TableCell>
               <TableCell align="center">Address</TableCell>
-              <TableCell align="center">To be paid</TableCell>
-              <TableCell align="center">Paid</TableCell>
+              <TableCell align="center">To be paid [ETH]</TableCell>
+              <TableCell align="center">Paid [ETH]</TableCell>
               <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paymentSummaries.map((row) => (
+            {payments?.map((row) => (
               <TableRow
                 key={row.destination}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell align="center">{row.destination}</TableCell>
-                <TableCell align="center">{row.address}</TableCell>
-                <TableCell align="center">{row.toBePaid}</TableCell>
-                <TableCell align="center">{row.paid}</TableCell>
+                <TableCell align="left">{row.destination}</TableCell>
+                <TableCell align="center">{row.contractAddress}</TableCell>
+                <TableCell align="center">{weiToEth(row.toBePaid)}</TableCell>
+                <TableCell align="center">{weiToEth(row.paid)}</TableCell>
                 <TableCell align="center">
                   <Button variant="contained">PAY</Button>
                 </TableCell>
