@@ -2,21 +2,9 @@ import React from "react";
 import { Box, Container, Stack, Typography, Grid } from "../mui/mui";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-interface Address {
-  country: string;
-  city: string;
-  street: string;
-  postalCode: string;
-}
-interface Profile {
-  firstName: string;
-  lastName: string;
-  taxId: string;
-  address: Address;
-  mail: string;
-  phone: string;
-}
-async function getProfile() {
+import { Profile } from "../models/Profile";
+
+async function getProfile(): Promise<Profile> {
   const session = await getServerSession(authOptions);
   const res = await fetch(`${process.env.BACKEND_URL}/users`, {
     cache: "no-store",

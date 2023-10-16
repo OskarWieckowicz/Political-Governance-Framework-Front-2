@@ -4,4 +4,5 @@ export interface Payment {
   contractAddress: string;
   toBePaid: bigint;
   paid: bigint;
+  leftToPay: bigint;
 }

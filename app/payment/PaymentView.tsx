@@ -15,6 +15,41 @@ import {
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { Payment } from "../models/Payment";
+import { ethers } from "ethers";
+import { BrowserProvider, parseUnits } from "ethers";
+import { Profile } from "../models/Profile";
+
+async function getProfile(session): Promise<Profile> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users`, {
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+const contractABI = [
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "taxIdentifier",
+        type: "string",
+      },
+    ],
+    name: "pay",
+    outputs: [],
+    payable: true,
+    stateMutability: "payable",
+    type: "function",
+  },
+];
 
 async function getData(session): Promise<Payment[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payments`, {
@@ -32,6 +67,33 @@ async function getData(session): Promise<Payment[]> {
 const weiToEth = (wei) => {
   const ethValue = wei / 1e18;
   return ethValue.toFixed(4);
+};
+
+const payTax = async (
+  session,
+  toBePaidInWei: bigint,
+  contractAddress: string
+) => {
+  const profile = await getProfile(session);
+  const provider = new ethers.BrowserProvider(window.ethereum);
+
+  try {
+    const signer = await provider.getSigner();
+    const contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    // Send a transaction to the 'pay' method
+    const tx = await contract.pay(profile.taxId, {
+      value: toBePaidInWei,
+    });
+
+    // Wait for the transaction to be mined
+    await tx.wait();
+
+    // Update the UI or perform other actions as needed
+    console.log("Payment successful");
+  } catch (error) {
+    console.error("Payment failed:", error);
+  }
 };
 
 const PaymentView = () => {
@@ -75,6 +137,7 @@ const PaymentView = () => {
               <TableCell align="center">Address</TableCell>
               <TableCell align="center">To be paid [ETH]</TableCell>
               <TableCell align="center">Paid [ETH]</TableCell>
+              <TableCell align="center">Left to pay [ETH]</TableCell>
               <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
@@ -88,8 +151,16 @@ const PaymentView = () => {
                 <TableCell align="center">{row.contractAddress}</TableCell>
                 <TableCell align="center">{weiToEth(row.toBePaid)}</TableCell>
                 <TableCell align="center">{weiToEth(row.paid)}</TableCell>
+                <TableCell align="center">{weiToEth(row.leftToPay)}</TableCell>
                 <TableCell align="center">
-                  <Button variant="contained">PAY</Button>
+                  <Button
+                    onClick={() =>
+                      payTax(session, row.toBePaid, row.contractAddress)
+                    }
+                    variant="contained"
+                  >
+                    PAY
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
