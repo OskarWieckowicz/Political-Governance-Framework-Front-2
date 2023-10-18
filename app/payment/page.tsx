@@ -8,10 +8,31 @@ import { redirect } from "next/navigation";
 import PaymentView from "./PaymentView";
 import { Box, CircularProgress } from "../mui/mui";
 import { TaxDistribution } from "../models/TaxDistribution";
+import { Declaration } from "../models/Declaration";
+import DeclarationNotSubmittedView from "./DeclarationNotSubmittedView";
 
-async function getData(session): Promise<TaxesDistributionDeclaration> {
+async function getTaxesDistributionDeclaration(
+  session
+): Promise<TaxesDistributionDeclaration> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/taxesDistribution`,
+    {
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+    }
+  );
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
+
+async function getDeclaration(session): Promise<Declaration> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/declaration`,
     {
       cache: "no-store",
       headers: {
@@ -56,6 +77,7 @@ const PaymentPage = () => {
       redirect("/api/auth/signin");
     },
   });
+  const [isSubmitted, setIsSubmited] = useState<boolean>(false);
   const [taxesDistributionDeclaration, setTaxesDistributionDeclaration] =
     useState<TaxesDistributionDeclaration>();
   const { handleSubmit, register } = useForm({
@@ -67,8 +89,17 @@ const PaymentPage = () => {
 
   useEffect(() => {
     if (session) {
-      getData(session).then((response: TaxesDistributionDeclaration) => {
-        setTaxesDistributionDeclaration(response);
+      getDeclaration(session).then((res: Declaration) => {
+        if (res.billingPeriod) {
+          setIsSubmited(true);
+          getTaxesDistributionDeclaration(session).then(
+            (response: TaxesDistributionDeclaration) => {
+              setTaxesDistributionDeclaration(response);
+            }
+          );
+        } else {
+          setIsSubmited(false);
+        }
       });
     }
   }, [session]);
@@ -80,7 +111,9 @@ const PaymentPage = () => {
     });
   };
 
-  return taxesDistributionDeclaration?.submitted ? (
+  return !isSubmitted ? (
+    <DeclarationNotSubmittedView />
+  ) : taxesDistributionDeclaration?.submitted ? (
     <PaymentView />
   ) : taxesDistributionDeclaration?.distributions ? (
     <TaxesDistibutionForm

@@ -38,8 +38,6 @@ const TaxesDistibutionForm = (props: Props) => {
   const [total, setTotal] = useState(100);
 
   const handlePercentageChange = (index: number, value: number) => {
-    console.log(index);
-    console.log(value);
     setValue(`percentages[${index}].percentage`, isNaN(value) ? 0 : value);
     setTotal(
       getValues("percentages").reduce(

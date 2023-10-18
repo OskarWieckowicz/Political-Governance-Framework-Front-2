@@ -81,15 +81,11 @@ const payTax = async (
     const signer = await provider.getSigner();
     const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
-    // Send a transaction to the 'pay' method
     const tx = await contract.pay(profile.taxId, {
       value: toBePaidInWei,
     });
 
-    // Wait for the transaction to be mined
     await tx.wait();
-
-    // Update the UI or perform other actions as needed
     console.log("Payment successful");
   } catch (error) {
     console.error("Payment failed:", error);
@@ -105,12 +101,25 @@ const PaymentView = () => {
     },
   });
 
-  useEffect(() => {
+  const refreshPayments = async () => {
     if (session) {
-      getData(session).then((response: Payment[]) => {
+      try {
+        const response = await getData(session);
         setPayments(response);
-      });
+      } catch (error) {
+        console.error("Failed to fetch payments:", error);
+      }
     }
+  };
+
+  useEffect(() => {
+    refreshPayments();
+
+    const intervalId = setInterval(() => {
+      refreshPayments();
+    }, 60000);
+
+    return () => clearInterval(intervalId);
   }, [session]);
 
   if (!payments) {
@@ -154,8 +163,9 @@ const PaymentView = () => {
                 <TableCell align="center">{weiToEth(row.leftToPay)}</TableCell>
                 <TableCell align="center">
                   <Button
+                    disabled={row.leftToPay == BigInt(0)}
                     onClick={() =>
-                      payTax(session, row.toBePaid, row.contractAddress)
+                      payTax(session, row.leftToPay, row.contractAddress)
                     }
                     variant="contained"
                   >
