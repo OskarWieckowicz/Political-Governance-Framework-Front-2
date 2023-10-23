@@ -18,6 +18,7 @@ import { Payment } from "../models/Payment";
 import { ethers } from "ethers";
 import { BrowserProvider, parseUnits } from "ethers";
 import { Profile } from "../models/Profile";
+import { weiToEth } from "../utils/converters";
 
 async function getProfile(session): Promise<Profile> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users`, {
@@ -64,10 +65,6 @@ async function getData(session): Promise<Payment[]> {
 
   return res.json();
 }
-const weiToEth = (wei) => {
-  const ethValue = wei / 1e18;
-  return ethValue.toFixed(4);
-};
 
 const payTax = async (
   session,

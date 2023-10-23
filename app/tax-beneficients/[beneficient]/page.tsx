@@ -15,6 +15,7 @@ import SatisfactionChart from "./SatisfactionChart";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { BeneficiaryDetails } from "@/app/models/BeneficiaryDetails";
+import { weiToEth } from "@/app/utils/converters";
 
 const getData = async (params) => {
   const session = await getServerSession(authOptions);
@@ -93,7 +94,7 @@ const BeneficientPage = async ({ params }) => {
                 <Typography sx={{ fontWeight: "bold" }}>Balance:</Typography>
               </Grid>
               <Grid item xs={8}>
-                <Typography>{beneficiary.balance} ETH</Typography>
+                <Typography>{weiToEth(beneficiary.balance)} ETH</Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography sx={{ fontWeight: "bold" }}>
