@@ -6,6 +6,7 @@ import {
   CardMedia,
   Container,
   Grid,
+  Link,
   Stack,
   Typography,
 } from "../../mui/mui";
@@ -13,16 +14,7 @@ import CashFlowChart from "./ChashFlowChart";
 import SatisfactionChart from "./SatisfactionChart";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
-interface BeneficiaryDetails {
-  image: string;
-  name: string;
-  description: string;
-  site: string;
-  leader: string;
-  smartContractAddress: string;
-  balance: number;
-  citizensSatisfaction: number;
-}
+import { BeneficiaryDetails } from "@/app/models/BeneficiaryDetails";
 
 const getData = async (params) => {
   const session = await getServerSession(authOptions);
@@ -45,6 +37,7 @@ const getData = async (params) => {
 
 const BeneficientPage = async ({ params }) => {
   const beneficiary: BeneficiaryDetails = await getData(params);
+  console.log(beneficiary);
   return (
     <Container sx={{ padding: "15px" }}>
       <Card>
@@ -70,7 +63,9 @@ const BeneficientPage = async ({ params }) => {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Typography>{beneficiary.site}</Typography>
+                <Link href={beneficiary.site} underline="none" target="_blank">
+                  {beneficiary.site}
+                </Link>
               </Grid>
               <Grid item xs={4}>
                 <Typography sx={{ fontWeight: "bold" }}>
@@ -86,7 +81,13 @@ const BeneficientPage = async ({ params }) => {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Typography>{beneficiary.smartContractAddress}</Typography>
+                <Link
+                  href={`https://sepolia.etherscan.io/address/${beneficiary.smartContractAddress}`}
+                  underline="none"
+                  target="_blank"
+                >
+                  {beneficiary.smartContractAddress}
+                </Link>
               </Grid>
               <Grid item xs={4}>
                 <Typography sx={{ fontWeight: "bold" }}>Balance:</Typography>
@@ -100,7 +101,7 @@ const BeneficientPage = async ({ params }) => {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Typography>{beneficiary.citizensSatisfaction} / 5</Typography>
+                <Typography>{beneficiary.rating} / 5</Typography>
               </Grid>
             </Grid>
           </Container>

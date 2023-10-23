@@ -14,13 +14,9 @@ import {
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import { TaxBeneficiary } from "../models/TaxBeneficiary";
+import RatingComponent from "./RatingComponent";
 
-interface TaxBeneficiary {
-  name: string;
-  description: string;
-  img: string;
-  rating: number;
-}
 async function getData() {
   const session = await getServerSession(authOptions);
   const res = await fetch(`${process.env.BACKEND_URL}/taxBeneficiaries`, {
@@ -36,8 +32,10 @@ async function getData() {
 
   return res.json();
 }
+
 const TaxBeneficientsPage = async () => {
   const cards: TaxBeneficiary[] = await getData();
+
   return (
     <Box>
       <Container maxWidth="sm">
@@ -78,7 +76,7 @@ const TaxBeneficientsPage = async () => {
                     // 16:9
                     pt: "56.25%",
                   }}
-                  image={card.img}
+                  image={card.image}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography gutterBottom variant="h5" component="h2">
@@ -90,10 +88,9 @@ const TaxBeneficientsPage = async () => {
                   <Link href={"/tax-beneficients/" + card.name}>
                     <Button size="small">View more</Button>
                   </Link>
-                  <Rating
-                    name="half-rating"
-                    defaultValue={card.rating}
-                    precision={0.5}
+                  <RatingComponent
+                    rating={card.rating}
+                    taxBeneficiaryId={card.id}
                   />
                 </CardActions>
               </Card>
