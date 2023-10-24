@@ -38,7 +38,6 @@ const getData = async (params) => {
 
 const BeneficientPage = async ({ params }) => {
   const beneficiary: BeneficiaryDetails = await getData(params);
-  console.log(beneficiary);
   return (
     <Container sx={{ padding: "15px" }}>
       <Card>

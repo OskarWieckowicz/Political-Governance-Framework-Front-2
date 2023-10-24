@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
   Container,
   Paper,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -66,31 +68,9 @@ async function getData(session): Promise<Payment[]> {
   return res.json();
 }
 
-const payTax = async (
-  session,
-  toBePaidInWei: bigint,
-  contractAddress: string
-) => {
-  const profile = await getProfile(session);
-  const provider = new ethers.BrowserProvider(window.ethereum);
-
-  try {
-    const signer = await provider.getSigner();
-    const contract = new ethers.Contract(contractAddress, contractABI, signer);
-
-    const tx = await contract.pay(profile.taxId, {
-      value: toBePaidInWei,
-    });
-
-    await tx.wait();
-    console.log("Payment successful");
-  } catch (error) {
-    console.error("Payment failed:", error);
-  }
-};
-
 const PaymentView = () => {
   const [payments, setPayments] = useState<Payment[]>();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -105,6 +85,37 @@ const PaymentView = () => {
         setPayments(response);
       } catch (error) {
         console.error("Failed to fetch payments:", error);
+      }
+    }
+  };
+
+  const payTax = async (
+    session,
+    toBePaidInWei: bigint,
+    contractAddress: string
+  ) => {
+    if (window.ethereum == null) {
+      setSnackbarOpen(true);
+    } else {
+      const profile = await getProfile(session);
+      const provider = new ethers.BrowserProvider(window.ethereum);
+
+      try {
+        const signer = await provider.getSigner();
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+
+        const tx = await contract.pay(profile.taxId, {
+          value: toBePaidInWei,
+        });
+
+        await tx.wait();
+        console.log("Payment successful");
+      } catch (error) {
+        console.error("Payment failed:", error);
       }
     }
   };
@@ -135,6 +146,20 @@ const PaymentView = () => {
 
   return (
     <Container sx={{ marginTop: "15px" }}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Metamask not found!
+        </Alert>
+      </Snackbar>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
