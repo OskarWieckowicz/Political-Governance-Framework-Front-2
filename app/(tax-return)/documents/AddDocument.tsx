@@ -6,19 +6,26 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
 } from "../../mui/mui";
-import { DocumentData } from "../../models/DocumentData";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { addNewDocumentAction } from "./actions";
+import { TransactionType } from "@/app/models/TypeEnum";
 
 const AddDocument = () => {
   const formRef = useRef();
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
+  const [selectedType, setSelectedType] = useState<string>(
+    TransactionType.Revenue
+  );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [validationError, setValidationError] = useState(null);
   const handleOpenDialog = () => {
@@ -29,19 +36,14 @@ const AddDocument = () => {
     setIsDialogOpen(false);
   };
 
-  const clientAction = async (data) => {
-    const { amount, type, file } = Object.fromEntries(data);
-    const result = await addNewDocumentAction({
-      amount: +amount,
-      type,
-      file,
-      date: selectedDate.format(),
-    } as DocumentData);
+  const clientAction = async (data: FormData) => {
+    const result = await addNewDocumentAction(data);
     if (result?.error) {
       setValidationError(result.error);
     } else {
       setValidationError(null);
       formRef.current.reset();
+      handleCloseDialog();
     }
   };
 
@@ -62,7 +64,8 @@ const AddDocument = () => {
             <DialogContent>
               <Stack spacing={2} padding="10px">
                 <DatePicker
-                  label="Date" // You can customize the label as needed
+                  slotProps={{ textField: { name: "date" } }}
+                  label="Date"
                   value={selectedDate}
                   onChange={handleDateChange}
                 />
@@ -73,11 +76,26 @@ const AddDocument = () => {
                 {validationError?.amount && (
                   <p>{validationError.amount._errors.join(", ")}</p>
                 )}
-                <TextField name="type" label="Type" />
+                <FormControl fullWidth>
+                  <InputLabel id="type-label">Type</InputLabel>
+                  <Select
+                    labelId="type-label"
+                    name="type"
+                    value={selectedType}
+                    onChange={(event) => setSelectedType(event.target.value)}
+                  >
+                    <MenuItem value="Revenue">
+                      {TransactionType.Revenue}
+                    </MenuItem>
+                    <MenuItem value="Expense">
+                      {TransactionType.Expense}
+                    </MenuItem>
+                  </Select>
+                </FormControl>
                 {validationError?.type && (
                   <p>{validationError.type._errors.join(", ")}</p>
                 )}
-                <TextField name="file" label="Document" />
+                <input type="file" name="file" />
                 {validationError?.file && (
                   <p>{validationError.file._errors.join(", ")}</p>
                 )}

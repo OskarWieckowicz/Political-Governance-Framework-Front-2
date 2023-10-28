@@ -12,6 +12,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import EditIcon from "@mui/icons-material/Edit";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 export {
   AdbIcon,
   MenuIcon,
@@ -26,4 +27,5 @@ export {
   AccountBalanceIcon,
   EditIcon,
   PictureAsPdfIcon,
+  FileDownloadIcon,
 };

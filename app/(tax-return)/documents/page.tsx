@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
-  Box,
   Paper,
   Table,
   TableBody,
@@ -9,14 +8,14 @@ import {
   TableHead,
   TableRow,
 } from "../../mui/mui";
-import Link from "next/link";
-import { PictureAsPdfIcon } from "@/app/mui/mui-icons";
+
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { DocumentData } from "../../models/DocumentData";
 import AddDocument from "./AddDocument";
+import DownloadButton from "./DownloadButton";
 
-const getData = async () => {
+async function getData(): Promise<DocumentData[]> {
   const session = await getServerSession(authOptions);
   const res = await fetch("http://localhost:8081/documents", {
     cache: "no-store",
@@ -29,10 +28,11 @@ const getData = async () => {
   }
 
   return res.json();
-};
+}
 
 const DocumentsPage = async () => {
   const data = await getData();
+  console.log(data);
   return (
     <>
       <AddDocument />
@@ -47,23 +47,13 @@ const DocumentsPage = async () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row, index) => (
+            {data.map((doc, index) => (
               <TableRow key={index}>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.amount}</TableCell>
-                <TableCell>{row.type}</TableCell>
+                <TableCell>{doc.date}</TableCell>
+                <TableCell>{doc.amount}</TableCell>
+                <TableCell>{doc.type}</TableCell>
                 <TableCell>
-                  <Link href={"/hi"} target="_blank" rel="noopener">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <PictureAsPdfIcon />
-                      {row.file}
-                    </Box>
-                  </Link>
+                  <DownloadButton documentData={doc} />
                 </TableCell>
               </TableRow>
             ))}
