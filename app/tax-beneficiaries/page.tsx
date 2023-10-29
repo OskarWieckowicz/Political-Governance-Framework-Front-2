@@ -8,7 +8,6 @@ import {
   CardMedia,
   Container,
   Grid,
-  Rating,
   Typography,
 } from "../mui/mui";
 import Link from "next/link";
@@ -33,7 +32,7 @@ async function getData() {
   return res.json();
 }
 
-const TaxBeneficientsPage = async () => {
+const TaxBeneficiariesPage = async () => {
   const cards: TaxBeneficiary[] = await getData();
 
   return (
@@ -47,7 +46,7 @@ const TaxBeneficientsPage = async () => {
           gutterBottom
           marginTop="10px"
         >
-          Tax Beneficients
+          Tax Beneficiaries
         </Typography>
         <Typography
           variant="h5"
@@ -85,7 +84,7 @@ const TaxBeneficientsPage = async () => {
                   <Typography>{card.description}</Typography>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "space-between" }}>
-                  <Link href={"/tax-beneficients/" + card.name}>
+                  <Link href={"/tax-beneficiaries/" + card.name}>
                     <Button size="small">View more</Button>
                   </Link>
                   <RatingComponent
@@ -102,4 +101,4 @@ const TaxBeneficientsPage = async () => {
   );
 };
 
-export default TaxBeneficientsPage;
+export default TaxBeneficiariesPage;

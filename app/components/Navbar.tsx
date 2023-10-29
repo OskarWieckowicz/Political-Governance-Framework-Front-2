@@ -1,9 +1,9 @@
 "use client";
 import * as React from "react";
 import {
-  AccountBalanceIcon,
-  MenuIcon,
-  KeyboardArrowDownIcon,
+  AccountBalance as AccountBalanceIcon,
+  Menu as MenuIcon,
+  KeyboardArrowDown as KeyboardArrowDownIcon,
 } from "../mui/mui-icons";
 import { useRouter, redirect } from "next/navigation";
 import {
@@ -24,7 +24,7 @@ import { useEffect } from "react";
 
 const pages = [
   { label: "Tax Return", link: "/declaration" },
-  { label: "Tax Beneficients", link: "/tax-beneficients" },
+  { label: "Tax Beneficiaries", link: "/tax-beneficiaries" },
   { label: "Payment", link: "/payment" },
 ];
 const settings = ["Profile", "Settings", "Logout"];

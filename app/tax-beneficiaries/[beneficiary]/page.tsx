@@ -1,13 +1,11 @@
 import React from "react";
 import {
-  Box,
   Card,
   CardContent,
   CardMedia,
   Container,
   Grid,
   Link,
-  Stack,
   Typography,
 } from "../../mui/mui";
 import CashFlowChart from "./ChashFlowChart";
@@ -20,7 +18,7 @@ import { weiToEth } from "@/app/utils/converters";
 const getData = async (params) => {
   const session = await getServerSession(authOptions);
   const res = await fetch(
-    `${process.env.BACKEND_URL}/taxBeneficiaries/details/${params.beneficient}`,
+    `${process.env.BACKEND_URL}/taxBeneficiaries/details/${params.beneficiary}`,
     {
       cache: "no-store",
       headers: {
@@ -36,7 +34,7 @@ const getData = async (params) => {
   return res.json();
 };
 
-const BeneficientPage = async ({ params }) => {
+const BeneficiaryPage = async ({ params }) => {
   const beneficiary: BeneficiaryDetails = await getData(params);
   return (
     <Container sx={{ padding: "15px" }}>
@@ -82,7 +80,7 @@ const BeneficientPage = async ({ params }) => {
               </Grid>
               <Grid item xs={8}>
                 <Link
-                  href={`https://sepolia.etherscan.io/address/${beneficiary.smartContractAddress}`}
+                  href={`${process.env.NEXT_ETHERSCAN_URL}${beneficiary.smartContractAddress}`}
                   underline="none"
                   target="_blank"
                 >
@@ -121,4 +119,4 @@ const BeneficientPage = async ({ params }) => {
   );
 };
 
-export default BeneficientPage;
+export default BeneficiaryPage;

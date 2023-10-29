@@ -5,7 +5,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Provider from "./components/Provider";
+import Provider from "./providers/Provider";
 import { Toolbar } from "./mui/mui";
 const inter = Inter({ subsets: ["latin"] });
 

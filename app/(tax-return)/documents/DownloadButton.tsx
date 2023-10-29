@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Box, IconButton } from "../../mui/mui";
-import { FileDownloadIcon } from "@/app/mui/mui-icons";
+import { FileDownload as FileDownloadIcon } from "@/app/mui/mui-icons";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { DocumentData } from "@/app/models/DocumentData";
@@ -53,9 +53,9 @@ const DownloadButton = (props: Props) => {
         alignItems: "center",
       }}
     >
+      {documentData.fileName}
       <IconButton onClick={(e) => handleDownloadClick(e)}>
         <FileDownloadIcon />
-        {documentData.fileName}
       </IconButton>
     </Box>
   );

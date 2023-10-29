@@ -17,7 +17,7 @@ import DownloadButton from "./DownloadButton";
 
 async function getData(): Promise<DocumentData[]> {
   const session = await getServerSession(authOptions);
-  const res = await fetch("http://localhost:8081/documents", {
+  const res = await fetch(`${process.env.BACKEND_URL}/documents`, {
     cache: "no-store",
     headers: {
       Authorization: `Bearer ${session?.accessToken}`,
@@ -32,7 +32,7 @@ async function getData(): Promise<DocumentData[]> {
 
 const DocumentsPage = async () => {
   const data = await getData();
-  console.log(data);
+
   return (
     <>
       <AddDocument />

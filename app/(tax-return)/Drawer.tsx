@@ -14,10 +14,10 @@ import {
   Typography,
 } from "../mui/mui";
 import {
-  FolderSharedIcon,
-  HistoryIcon,
-  InboxIcon,
-  MailIcon,
+  FolderShared as FolderSharedIcon,
+  History as HistoryIcon,
+  Inbox as InboxIcon,
+  Mail as MailIcon,
 } from "../mui/mui-icons";
 import Link from "next/link";
 const drawerWidth = 240;

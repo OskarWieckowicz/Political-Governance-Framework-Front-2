@@ -107,7 +107,6 @@ const PaymentPage = () => {
   const onSubmit = (data: { percentages: TaxDistribution[] }) => {
     postData(data.percentages, session).then((response) => {
       setTaxesDistributionDeclaration(response);
-      console.log(taxesDistributionDeclaration);
     });
   };
 
