@@ -6,10 +6,11 @@ import TaxesDistibutionForm from "./TaxesDistibutionForm";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import PaymentView from "./PaymentView";
-import { Box, CircularProgress } from "../mui/mui";
+import { Box, CircularProgress, Container } from "../mui/mui";
 import { TaxDistribution } from "../models/TaxDistribution";
 import { Declaration } from "../models/Declaration";
 import DeclarationNotSubmittedView from "./DeclarationNotSubmittedView";
+import ErrorSnackbar from "../components/ErrorSnackbar";
 
 async function getTaxesDistributionDeclaration(
   session
@@ -80,55 +81,62 @@ const PaymentPage = () => {
   const [isSubmitted, setIsSubmited] = useState<boolean>(false);
   const [taxesDistributionDeclaration, setTaxesDistributionDeclaration] =
     useState<TaxesDistributionDeclaration>();
-  const { handleSubmit, register } = useForm({
-    defaultValues: {
-      revenue: 0,
-      expense: 0,
-    },
-  });
-
+  const [error, setError] = useState(null);
   useEffect(() => {
     if (session) {
-      getDeclaration(session).then((res: Declaration) => {
-        if (res.billingPeriod) {
-          setIsSubmited(true);
-          getTaxesDistributionDeclaration(session).then(
-            (response: TaxesDistributionDeclaration) => {
-              setTaxesDistributionDeclaration(response);
-            }
-          );
-        } else {
-          setIsSubmited(false);
-        }
-      });
+      getDeclaration(session)
+        .then((res: Declaration) => {
+          if (res.billingPeriod) {
+            setIsSubmited(true);
+            getTaxesDistributionDeclaration(session)
+              .then((response: TaxesDistributionDeclaration) => {
+                setTaxesDistributionDeclaration(response);
+              })
+              .catch((e) => setError(e.message));
+          } else {
+            setIsSubmited(false);
+          }
+        })
+        .catch((e) => setError(e.message));
     }
   }, [session]);
 
   const onSubmit = (data: { percentages: TaxDistribution[] }) => {
-    postData(data.percentages, session).then((response) => {
-      setTaxesDistributionDeclaration(response);
-    });
+    postData(data.percentages, session)
+      .then((response) => {
+        setTaxesDistributionDeclaration(response);
+      })
+      .catch((e) => setError(e.message));
   };
 
-  return !isSubmitted ? (
-    <DeclarationNotSubmittedView />
-  ) : taxesDistributionDeclaration?.submitted ? (
-    <PaymentView />
-  ) : taxesDistributionDeclaration?.distributions ? (
-    <TaxesDistibutionForm
-      onSubmit={onSubmit}
-      distributions={taxesDistributionDeclaration?.distributions}
-    />
-  ) : (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        marginTop: "50px",
-      }}
-    >
-      <CircularProgress />
-    </Box>
+  return (
+    <Container>
+      <ErrorSnackbar
+        open={error}
+        onClose={() => setError(null)}
+        message={error}
+      />
+      {!isSubmitted ? (
+        <DeclarationNotSubmittedView />
+      ) : taxesDistributionDeclaration?.submitted ? (
+        <PaymentView />
+      ) : taxesDistributionDeclaration?.distributions ? (
+        <TaxesDistibutionForm
+          onSubmit={onSubmit}
+          distributions={taxesDistributionDeclaration?.distributions}
+        />
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "50px",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+    </Container>
   );
 };
 

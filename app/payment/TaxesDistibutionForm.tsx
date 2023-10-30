@@ -20,14 +20,7 @@ interface Props {
 }
 const TaxesDistibutionForm = (props: Props) => {
   const initialValues = props.distributions;
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    getValues,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { handleSubmit, control, setValue, getValues } = useForm({
     defaultValues: {
       percentages: initialValues.map((item) => ({
         percentage: item.percentage,

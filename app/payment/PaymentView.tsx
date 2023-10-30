@@ -18,7 +18,6 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { Payment } from "../models/Payment";
 import { ethers } from "ethers";
-import { BrowserProvider, parseUnits } from "ethers";
 import { Profile } from "../models/Profile";
 import { weiToEth } from "../utils/converters";
 
