@@ -19,15 +19,25 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { addNewDocumentAction } from "./actions";
 import { TransactionType } from "@/app/models/TypeEnum";
+import { PickerChangeHandlerContext } from "@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types";
+import { DateValidationError } from "@mui/x-date-pickers";
+
+interface ValidationErrorType {
+  date?: { _errors: string[] };
+  amount?: { _errors: string[] };
+  file?: { _errors: string[] };
+  type?: { _errors: string[] };
+}
 
 const AddDocument = () => {
-  const formRef = useRef();
+  const formRef = useRef<HTMLFormElement>(null);
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
   const [selectedType, setSelectedType] = useState<string>(
     TransactionType.Revenue
   );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [validationError, setValidationError] = useState(null);
+  const [validationError, setValidationError] =
+    useState<ValidationErrorType | null>(null);
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
   };
@@ -42,13 +52,16 @@ const AddDocument = () => {
       setValidationError(result.error);
     } else {
       setValidationError(null);
-      formRef.current.reset();
+      formRef?.current?.reset();
       handleCloseDialog();
     }
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleDateChange = (
+    date: Dayjs | null,
+    context: PickerChangeHandlerContext<DateValidationError>
+  ) => {
+    setSelectedDate(date as Dayjs);
   };
 
   return (

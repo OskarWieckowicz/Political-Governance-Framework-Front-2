@@ -1,7 +1,7 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth, { NextAuthOptions, User } from "next-auth";
 import KeycloakProvider from "next-auth/providers/keycloak";
 
-const refreshAccessToken = async (token) => {
+const refreshAccessToken = async (token: any) => {
   try {
     if (Date.now() > token.refreshTokenExpired) throw Error;
     const details = {
@@ -18,7 +18,7 @@ const refreshAccessToken = async (token) => {
     });
     const formData = formBody.join("&");
     const url = process.env.KEYCLOAK_TOKEN_ENDPOINT;
-    const response = await fetch(url, {
+    const response = await fetch(url as string, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
@@ -47,10 +47,9 @@ const refreshAccessToken = async (token) => {
 export const authOptions: NextAuthOptions = {
   providers: [
     KeycloakProvider({
-      clientId: process.env.KEYCLOAK_ID,
-      clientSecret: process.env.KEYCLOAK_SECRET,
+      clientId: process.env.KEYCLOAK_ID as string,
+      clientSecret: process.env.KEYCLOAK_SECRET as string,
       issuer: process.env.KEYCLOAK_ISSUER,
-      secret: process.env.NEXTAUTH_SECRET,
     }),
   ],
   callbacks: {
@@ -68,12 +67,13 @@ export const authOptions: NextAuthOptions = {
       }
 
       // Return previous token if the access token has not expired yet
-      if (Date.now() < token.accessTokenExpired) return token;
+      if (token.accessTokenExpired && Date.now() < token.accessTokenExpired)
+        return token;
 
       // Access token has expired, try to update it
       return refreshAccessToken(token);
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       if (token) {
         session.user = token.user;
         session.error = token.error;

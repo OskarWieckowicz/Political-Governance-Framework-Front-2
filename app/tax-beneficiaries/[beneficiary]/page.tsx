@@ -15,10 +15,16 @@ import { getServerSession } from "next-auth";
 import { BeneficiaryDetails } from "@/app/models/BeneficiaryDetails";
 import { weiToEth } from "@/app/utils/converters";
 
-const getData = async (params) => {
+interface Props {
+  params: {
+    beneficiary: string;
+  };
+}
+
+const getData = async (beneficiary: string) => {
   const session = await getServerSession(authOptions);
   const res = await fetch(
-    `${process.env.BACKEND_URL}/taxBeneficiaries/details/${params.beneficiary}`,
+    `${process.env.BACKEND_URL}/taxBeneficiaries/details/${beneficiary}`,
     {
       cache: "no-store",
       headers: {
@@ -34,8 +40,8 @@ const getData = async (params) => {
   return res.json();
 };
 
-const BeneficiaryPage = async ({ params }) => {
-  const beneficiary: BeneficiaryDetails = await getData(params);
+const BeneficiaryPage = async ({ params }: Props) => {
+  const beneficiary: BeneficiaryDetails = await getData(params.beneficiary);
   return (
     <Container sx={{ padding: "15px" }}>
       <Card>

@@ -8,8 +8,9 @@ import ErrorSnackbar from "@/app/components/ErrorSnackbar";
 import { SubmittedDeclarationView } from "./SubmittedDeclarationView";
 import DeclarationFormView from "./DeclarationFormView";
 import { DeclarationFormData } from "@/app/models/DeclarationFormData";
+import { Session } from "next-auth";
 
-async function getData(session): Promise<Declaration> {
+async function getData(session: Session): Promise<Declaration> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/declaration`,
     {
@@ -32,7 +33,7 @@ function getPreviousMonth(): string {
   return previousMonth.toLocaleString("default", { month: "long" });
 }
 
-async function putData(session, payload: DeclarationFormData) {
+async function putData(session: Session, payload: DeclarationFormData) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/declaration`,
     {
@@ -79,12 +80,14 @@ const DeclarationPage = () => {
   }, [session]);
 
   const onSubmit = async (formData: DeclarationFormData) => {
-    putData(session, formData)
-      .then((resp) => {
-        setDeclaration(resp);
-        setIsSubmited(true);
-      })
-      .catch((e) => setError(e.message));
+    if (session) {
+      putData(session, formData)
+        .then((resp) => {
+          setDeclaration(resp);
+          setIsSubmited(true);
+        })
+        .catch((e) => setError(e.message));
+    }
   };
 
   const makeCorrectionHandler = () => {
@@ -94,7 +97,7 @@ const DeclarationPage = () => {
   return (
     <Container>
       <ErrorSnackbar
-        open={error}
+        open={error != null}
         onClose={() => setError(null)}
         message={error}
       />

@@ -67,7 +67,7 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
-  const handlePageNav = (url) => {
+  const handlePageNav = (url: string) => {
     handleCloseUserMenu();
     router.push(url);
   };

@@ -5,6 +5,6 @@ export interface BeneficiaryDetails {
   site: string;
   leader: string;
   smartContractAddress: string;
-  balance: number;
+  balance: bigint;
   rating: number;
 }

@@ -1,4 +1,6 @@
-export const weiToEth = (wei) => {
-  const ethValue = wei / 1e18;
-  return ethValue.toFixed(4);
+import { formatEther } from "ethers";
+
+export const weiToEth = (wei: bigint) => {
+  const etherValue = formatEther(wei);
+  return parseFloat(etherValue).toFixed(4);
 };

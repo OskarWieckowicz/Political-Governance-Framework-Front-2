@@ -3,6 +3,7 @@ import React from "react";
 import { Rating } from "../mui/mui";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { Session } from "next-auth";
 
 interface Props {
   rating: number;
@@ -10,11 +11,14 @@ interface Props {
 }
 
 interface RatingRequest {
-  value: number;
+  value: number | null;
   taxBeneficiaryId: number;
 }
 
-async function putData(payload: RatingRequest, session): Promise<void> {
+async function putData(
+  payload: RatingRequest,
+  session: Session | null
+): Promise<void> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/ratings`, {
     method: "PUT",
     cache: "no-store",
@@ -33,7 +37,7 @@ const RatingComponent = (props: Props) => {
       redirect("/api/auth/signin");
     },
   });
-  const handleRatingChange = async (newRating) => {
+  const handleRatingChange = async (newRating: number | null) => {
     await putData(
       { value: newRating, taxBeneficiaryId: props.taxBeneficiaryId },
       session

@@ -31,7 +31,7 @@ const TaxesDistibutionForm = (props: Props) => {
   const [total, setTotal] = useState(100);
 
   const handlePercentageChange = (index: number, value: number) => {
-    setValue(`percentages[${index}].percentage`, isNaN(value) ? 0 : value);
+    setValue(`percentages.${index}.percentage`, isNaN(value) ? 0 : value);
     setTotal(
       getValues("percentages").reduce(
         (sum, item) => sum + (isNaN(item.percentage) ? 0 : item.percentage),
@@ -49,7 +49,7 @@ const TaxesDistibutionForm = (props: Props) => {
             {initialValues.map((item, index) => (
               <Grid item xs={2} key={index}>
                 <Controller
-                  name={`percentages[${index}].percentage`}
+                  name={`percentages.${index}.percentage`}
                   control={control}
                   render={({ field }) => (
                     <TextField

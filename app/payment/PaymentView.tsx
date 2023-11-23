@@ -20,8 +20,9 @@ import { Payment } from "../models/Payment";
 import { ethers } from "ethers";
 import { Profile } from "../models/Profile";
 import { weiToEth } from "../utils/converters";
+import { Session } from "next-auth";
 
-async function getProfile(session): Promise<Profile> {
+async function getProfile(session: Session | null): Promise<Profile> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users`, {
     cache: "no-store",
     headers: {
@@ -53,7 +54,7 @@ const contractABI = [
   },
 ];
 
-async function getData(session): Promise<Payment[]> {
+async function getData(session: Session): Promise<Payment[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/payments`, {
     cache: "no-store",
     headers: {
@@ -89,7 +90,7 @@ const PaymentView = () => {
   };
 
   const payTax = async (
-    session,
+    session: Session | null,
     toBePaidInWei: bigint,
     contractAddress: string
   ) => {
@@ -127,7 +128,7 @@ const PaymentView = () => {
     }, 60000);
 
     return () => clearInterval(intervalId);
-  }, [session]);
+  }, []);
 
   if (!payments) {
     return (

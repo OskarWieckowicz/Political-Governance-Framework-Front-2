@@ -33,7 +33,9 @@ const DownloadButton = (props: Props) => {
     return res.blob();
   }
 
-  const handleDownloadClick = async (e) => {
+  const handleDownloadClick = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     const fileData = await dowloadFile();
     if (fileData) {
       const url = window.URL.createObjectURL(new Blob([fileData]));

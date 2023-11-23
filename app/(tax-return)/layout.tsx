@@ -1,7 +1,11 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import ClippedDrawer from "./Drawer";
 
-const TaxReturnLayout = ({ children }) => {
+interface Props {
+  children: ReactNode;
+}
+
+const TaxReturnLayout = ({ children }: Props) => {
   return <ClippedDrawer>{children}</ClippedDrawer>;
 };
 

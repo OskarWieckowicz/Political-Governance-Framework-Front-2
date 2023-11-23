@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { ReactNode } from "react";
 import {
   AppBar,
   Box,
@@ -22,7 +22,11 @@ import {
 import Link from "next/link";
 const drawerWidth = 240;
 
-export default function ClippedDrawer({ children }) {
+interface ClippedDrawerProps {
+  children: React.ReactNode;
+}
+
+export default function ClippedDrawer({ children }: ClippedDrawerProps) {
   const nav = [
     { label: "Declaration", url: "/declaration", icon: <MailIcon /> },
     { label: "Documents", url: "/documents", icon: <FolderSharedIcon /> },

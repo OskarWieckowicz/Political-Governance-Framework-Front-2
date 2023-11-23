@@ -33,9 +33,9 @@ export async function addNewDocumentAction(formData: FormData) {
     file,
     date,
   };
-  const { error } = DocumentEntrySchema.safeParse(validationPayload);
-  if (error) {
-    return { error: error.format() };
+  const result = DocumentEntrySchema.safeParse(validationPayload);
+  if (result.success == false) {
+    return { error: result.error.format() };
   }
   await createDocument(formData);
   revalidatePath("documents");

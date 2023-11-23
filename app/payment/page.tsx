@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { TaxesDistributionDeclaration } from "../models/TaxesDistributionDeclaration";
 import TaxesDistibutionForm from "./TaxesDistibutionForm";
 import { useSession } from "next-auth/react";
@@ -11,9 +10,10 @@ import { TaxDistribution } from "../models/TaxDistribution";
 import { Declaration } from "../models/Declaration";
 import DeclarationNotSubmittedView from "./DeclarationNotSubmittedView";
 import ErrorSnackbar from "../components/ErrorSnackbar";
+import { Session } from "next-auth";
 
 async function getTaxesDistributionDeclaration(
-  session
+  session: Session
 ): Promise<TaxesDistributionDeclaration> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/taxesDistribution`,
@@ -31,7 +31,7 @@ async function getTaxesDistributionDeclaration(
   return res.json();
 }
 
-async function getDeclaration(session): Promise<Declaration> {
+async function getDeclaration(session: Session): Promise<Declaration> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/declaration`,
     {
@@ -50,7 +50,7 @@ async function getDeclaration(session): Promise<Declaration> {
 
 async function postData(
   payload: TaxDistribution[],
-  session
+  session: Session
 ): Promise<TaxesDistributionDeclaration> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/taxesDistribution`,
@@ -102,17 +102,19 @@ const PaymentPage = () => {
   }, [session]);
 
   const onSubmit = (data: { percentages: TaxDistribution[] }) => {
-    postData(data.percentages, session)
-      .then((response) => {
-        setTaxesDistributionDeclaration(response);
-      })
-      .catch((e) => setError(e.message));
+    if (session) {
+      postData(data.percentages, session)
+        .then((response) => {
+          setTaxesDistributionDeclaration(response);
+        })
+        .catch((e) => setError(e.message));
+    }
   };
 
   return (
     <Container>
       <ErrorSnackbar
-        open={error}
+        open={error != null}
         onClose={() => setError(null)}
         message={error}
       />
