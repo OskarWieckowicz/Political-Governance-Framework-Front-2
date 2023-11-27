@@ -50,6 +50,9 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.KEYCLOAK_ID as string,
       clientSecret: process.env.KEYCLOAK_SECRET as string,
       issuer: process.env.KEYCLOAK_ISSUER,
+      httpOptions: {
+        timeout: 40000,
+      },
     }),
   ],
   callbacks: {
