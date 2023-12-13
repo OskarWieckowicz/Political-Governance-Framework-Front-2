@@ -19,7 +19,7 @@ const DownloadButton = (props: Props) => {
   });
 
   async function dowloadFile(): Promise<Blob> {
-    const url = `${process.env.BACKEND_URL}/documents/download?key=${documentData.key}`;
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/documents/download?key=${documentData.key}`;
     const res = await fetch(url, {
       cache: "no-store",
       headers: {
