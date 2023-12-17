@@ -1,0 +1,21 @@
+.description1 {
+  box-shadow: 0px 0px 20px 0px rgba(66, 68, 90, 1);
+  border-radius: 30px;
+  padding: 20px;
+  background-color: whitesmoke;
+}
+
+.description2 {
+  box-shadow: 0px 0px 20px 0px rgba(66, 68, 90, 1);
+  border-radius: 30px;
+  padding: 20px;
+  background-color: whitesmoke;
+  transition: transform 0.5s;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.description2:hover {
+  transform: scale(1.03);
+  cursor: pointer;
+}

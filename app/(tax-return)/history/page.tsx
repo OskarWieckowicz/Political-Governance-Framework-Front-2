@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Container,
   Paper,
   Table,
   TableBody,
@@ -7,6 +8,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "../../mui/mui";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -39,35 +41,47 @@ const HistoryPage = async () => {
   const rows: History[] = await getData();
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Billing period</TableCell>
-            <TableCell align="center">Revenue</TableCell>
-            <TableCell align="center">Expense</TableCell>
-            <TableCell align="center">Income</TableCell>
-            <TableCell align="center">Taxes</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.billingPeriod}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.billingPeriod}
-              </TableCell>
-              <TableCell align="center">{row.revenue}</TableCell>
-              <TableCell align="center">{row.expense}</TableCell>
-              <TableCell align="center">{row.income}</TableCell>
-              <TableCell align="center">{row.taxes}</TableCell>
+    <Container>
+      <Typography
+        variant="h4"
+        style={{ textAlign: "center", marginBottom: "15px" }}
+      >
+        Tax return history
+      </Typography>
+      <Typography variant="body1" style={{ marginBottom: "15px" }}>
+        Every month you have to fill your tax return. Here you can find
+        historial data of your tax return declarations.
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Billing period</TableCell>
+              <TableCell align="center">Revenue</TableCell>
+              <TableCell align="center">Expense</TableCell>
+              <TableCell align="center">Income</TableCell>
+              <TableCell align="center">Taxes</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.billingPeriod}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.billingPeriod}
+                </TableCell>
+                <TableCell align="center">{row.revenue}</TableCell>
+                <TableCell align="center">{row.expense}</TableCell>
+                <TableCell align="center">{row.income}</TableCell>
+                <TableCell align="center">{row.taxes}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
 };
 

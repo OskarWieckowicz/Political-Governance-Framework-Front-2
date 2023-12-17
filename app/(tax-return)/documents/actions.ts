@@ -33,6 +33,7 @@ export async function addNewDocumentAction(formData: FormData) {
     file,
     date,
   };
+  console.log(validationPayload);
   const result = DocumentEntrySchema.safeParse(validationPayload);
   if (result.success == false) {
     return { error: result.error.format() };

@@ -2,6 +2,7 @@
 import React, { useRef, useState } from "react";
 import {
   Button,
+  Container,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,6 +13,7 @@ import {
   Select,
   Stack,
   TextField,
+  Typography,
 } from "../../mui/mui";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -21,6 +23,7 @@ import { addNewDocumentAction } from "./actions";
 import { TransactionType } from "@/app/models/TypeEnum";
 import { PickerChangeHandlerContext } from "@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types";
 import { DateValidationError } from "@mui/x-date-pickers";
+import { Add } from "@mui/icons-material";
 
 interface ValidationErrorType {
   date?: { _errors: string[] };
@@ -67,7 +70,7 @@ const AddDocument = () => {
   return (
     <div>
       <Button onClick={handleOpenDialog} variant="contained" color="primary">
-        Add Document
+        <Add /> Add Document
       </Button>
 
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -77,6 +80,7 @@ const AddDocument = () => {
             <DialogContent>
               <Stack spacing={2} padding="10px">
                 <DatePicker
+                  format="DD.MM.YYYY"
                   slotProps={{ textField: { name: "date" } }}
                   label="Date"
                   value={selectedDate}
@@ -85,7 +89,15 @@ const AddDocument = () => {
                 {validationError?.date && (
                   <p>{validationError.date._errors.join(", ")}</p>
                 )}
-                <TextField name="amount" label="Amount" type="number" />
+                <TextField
+                  name="amount"
+                  label="Amount"
+                  type="number"
+                  inputProps={{
+                    step: "0.01",
+                    min: 0,
+                  }}
+                />
                 {validationError?.amount && (
                   <p>{validationError.amount._errors.join(", ")}</p>
                 )}

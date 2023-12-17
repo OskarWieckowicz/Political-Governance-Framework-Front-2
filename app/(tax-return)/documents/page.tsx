@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "../../mui/mui";
 
 import { getServerSession } from "next-auth";
@@ -14,6 +15,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { DocumentData } from "../../models/DocumentData";
 import AddDocument from "./AddDocument";
 import DownloadButton from "./DownloadButton";
+import styles from "./page.module.css";
 
 async function getData(): Promise<DocumentData[]> {
   const session = await getServerSession(authOptions);
@@ -35,6 +37,16 @@ const DocumentsPage = async () => {
 
   return (
     <>
+      <Typography
+        variant="body1"
+        color="text-secondary"
+        sx={{ marginBottom: "20px" }}
+        className={styles.description}
+      >
+        Please submit documents and invoices verifying your income and expenses
+        from the previous month. Ensure each document specifies whether it
+        represents "Revenue" or "Expense" along with the corresponding amount.
+      </Typography>
       <AddDocument />
       <TableContainer component={Paper}>
         <Table>
