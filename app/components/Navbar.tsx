@@ -21,12 +21,13 @@ import {
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect } from "react";
-
+import styles from "./navbar.module.css";
 const pages = [
   { label: "Tax Return", link: "/declaration" },
   { label: "Tax Beneficiaries", link: "/tax-beneficiaries" },
   { label: "Payment", link: "/payment" },
 ];
+import { usePathname } from "next/navigation";
 const settings = ["Profile", "Settings", "Logout"];
 
 function Navbar() {
@@ -44,6 +45,7 @@ function Navbar() {
   }, [session]);
 
   const router = useRouter();
+  const pathName = usePathname();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -131,6 +133,7 @@ function Navbar() {
             >
               {pages.map((page) => (
                 <MenuItem
+                  className={pathName === page.link ? styles.active2 : ""}
                   key={page.label}
                   onClick={() => handlePageNav(page.link)}
                 >
@@ -157,13 +160,16 @@ function Navbar() {
                 textDecoration: "none",
               }}
             >
-              LOGO
+              PGF
             </Typography>
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Link key={page.label} href={page.link}>
-                <Button sx={{ my: 2, color: "white", display: "block" }}>
+                <Button
+                  sx={{ my: 2, color: "white", display: "block" }}
+                  className={pathName === page.link ? styles.active : ""}
+                >
                   {page.label}
                 </Button>
               </Link>
@@ -196,7 +202,10 @@ function Navbar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={handleCloseUserMenu}>
+              <MenuItem
+                onClick={handleCloseUserMenu}
+                className={pathName === "/profile" ? styles.active2 : ""}
+              >
                 <Link href="/profile">
                   <Typography textAlign="center">Profile</Typography>
                 </Link>

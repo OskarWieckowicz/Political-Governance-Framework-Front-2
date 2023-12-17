@@ -30,7 +30,7 @@ async function getData(session: Session): Promise<Declaration> {
 function getPreviousMonth(): string {
   const previousMonth = new Date();
   previousMonth.setMonth(previousMonth.getMonth() - 1);
-  return previousMonth.toLocaleString("default", { month: "long" });
+  return previousMonth.toLocaleString("en-US", { month: "long" });
 }
 
 async function putData(session: Session, payload: DeclarationFormData) {

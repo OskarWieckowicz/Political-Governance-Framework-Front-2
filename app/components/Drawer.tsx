@@ -1,9 +1,8 @@
+"use client";
 import React, { ReactNode } from "react";
 import {
-  AppBar,
   Box,
   CssBaseline,
-  Divider,
   Drawer,
   List,
   ListItem,
@@ -11,7 +10,6 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Typography,
 } from "../mui/mui";
 import {
   FolderShared as FolderSharedIcon,
@@ -20,13 +18,15 @@ import {
   Mail as MailIcon,
 } from "../mui/mui-icons";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 const drawerWidth = 240;
-
+import styles from "./drawer.module.css";
 interface ClippedDrawerProps {
   children: React.ReactNode;
 }
 
 export default function ClippedDrawer({ children }: ClippedDrawerProps) {
+  const pathName = usePathname();
   const nav = [
     { label: "Declaration", url: "/declaration", icon: <MailIcon /> },
     { label: "Documents", url: "/documents", icon: <FolderSharedIcon /> },
@@ -49,9 +49,13 @@ export default function ClippedDrawer({ children }: ClippedDrawerProps) {
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <List>
-            {nav.map((text, index) => (
+            {nav.map((text) => (
               <Link key={text.label} href={text.url}>
-                <ListItem key={text.label} disablePadding>
+                <ListItem
+                  key={text.label}
+                  disablePadding
+                  className={pathName === text.url ? styles.active : ""}
+                >
                   <ListItemButton>
                     <ListItemIcon>{text.icon}</ListItemIcon>
                     <ListItemText primary={text.label} />

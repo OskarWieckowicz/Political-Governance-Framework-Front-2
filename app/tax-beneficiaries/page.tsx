@@ -78,9 +78,11 @@ const TaxBeneficiariesPage = async () => {
                   image={card.image}
                 />
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {card.name}
-                  </Typography>
+                  <Link href={"/tax-beneficiaries/" + card.name}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {card.name}
+                    </Typography>
+                  </Link>
                   <Typography>{card.description}</Typography>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "space-between" }}>

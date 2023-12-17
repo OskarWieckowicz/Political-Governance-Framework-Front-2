@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import ClippedDrawer from "./Drawer";
+import ClippedDrawer from "../components/Drawer";
 
 interface Props {
   children: ReactNode;
