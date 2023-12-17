@@ -9,12 +9,12 @@ const DeclarationNotSubmittedView = () => {
         <Typography variant="body1">
           Before you will be able to pay your taxes you need to fill tax return
           delcaration, so we can calculate your obligations
-          <Link href={"/declaration"}>
-            <Typography sx={{ color: "blue", marginTop: "10px" }} variant="h5">
-              Go to delcaration page
-            </Typography>
-          </Link>
         </Typography>
+        <Link href={"/declaration"}>
+          <Typography sx={{ color: "blue", marginTop: "10px" }} variant="h5">
+            Go to delcaration page
+          </Typography>
+        </Link>
       </Stack>
     </Container>
   );
