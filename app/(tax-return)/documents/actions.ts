@@ -24,6 +24,22 @@ async function createDocument(formData: FormData) {
   return res.json();
 }
 
+async function deleteDocument(key: string): Promise<void> {
+  const session = await getServerSession(authOptions);
+
+  const res = await fetch(`${process.env.BACKEND_URL}/documents/${key}`, {
+    method: "DELETE",
+    cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${session?.accessToken}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+}
+
 export async function addNewDocumentAction(formData: FormData) {
   const { amount, type, file, date } = Object.fromEntries(formData);
 
@@ -33,11 +49,15 @@ export async function addNewDocumentAction(formData: FormData) {
     file,
     date,
   };
-  console.log(validationPayload);
   const result = DocumentEntrySchema.safeParse(validationPayload);
   if (result.success == false) {
     return { error: result.error.format() };
   }
   await createDocument(formData);
+  revalidatePath("documents");
+}
+
+export async function deleteDocumentAction(key: string) {
+  await deleteDocument(key);
   revalidatePath("documents");
 }

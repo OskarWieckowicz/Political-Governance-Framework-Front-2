@@ -16,6 +16,7 @@ import { DocumentData } from "../../models/DocumentData";
 import AddDocument from "./AddDocument";
 import DownloadButton from "./DownloadButton";
 import styles from "./page.module.css";
+import DeleteButton from "./DeleteButton";
 
 async function getData(): Promise<DocumentData[]> {
   const session = await getServerSession(authOptions);
@@ -64,8 +65,15 @@ const DocumentsPage = async () => {
                 <TableCell>{doc.date}</TableCell>
                 <TableCell>{doc.amount}</TableCell>
                 <TableCell>{doc.type}</TableCell>
-                <TableCell>
+                <TableCell
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <DownloadButton documentData={doc} />
+                  <DeleteButton documentData={doc} />
                 </TableCell>
               </TableRow>
             ))}
