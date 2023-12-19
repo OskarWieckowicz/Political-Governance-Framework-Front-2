@@ -10,6 +10,7 @@ import {
   Bar,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 function createData(date: string, rating: number) {
   return { date, rating };
@@ -69,34 +70,43 @@ const data = [
 const SatisfactionChart = () => {
   const theme = useTheme();
   return (
-    <BarChart
-      width={800}
-      height={400}
-      data={data}
-      margin={{
-        top: 16,
-        right: 16,
-        bottom: 0,
-        left: 24,
-      }}
+    <ResponsiveContainer
+      width="100%"
+      height="100%"
+      minWidth="300px"
+      minHeight="400px"
+      id="responsiveCashFlowChartContainer"
     >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" style={theme.typography.body2} />
-      <YAxis style={theme.typography.body2} domain={[0, 5]} tickCount={6}>
-        <Label
-          value={"Rating"}
-          angle={270}
-          position="left"
-          style={{
-            textAnchor: "middle",
-            fill: theme.palette.text.primary,
-            ...theme.typography.body1,
-          }}
-        />
-      </YAxis>
-      <Tooltip />
-      <Bar dataKey="rating" fill="#8884d8" />
-    </BarChart>
+      <BarChart
+        id="satisfactionChart"
+        width={800}
+        height={400}
+        data={data}
+        margin={{
+          top: 16,
+          right: 16,
+          bottom: 0,
+          left: 24,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" style={theme.typography.body2} />
+        <YAxis style={theme.typography.body2} domain={[0, 5]} tickCount={6}>
+          <Label
+            value={"Rating"}
+            angle={270}
+            position="left"
+            style={{
+              textAnchor: "middle",
+              fill: theme.palette.text.primary,
+              ...theme.typography.body1,
+            }}
+          />
+        </YAxis>
+        <Tooltip />
+        <Bar dataKey="rating" fill="#8884d8" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 

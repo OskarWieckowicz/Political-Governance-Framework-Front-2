@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useId } from "react";
 import { useTheme } from "@mui/material/styles";
 import {
   XAxis,
@@ -10,6 +10,7 @@ import {
   Bar,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 
 function createData(
@@ -96,40 +97,48 @@ const data = [
   },
 ];
 const CashFlowChart = () => {
+  // const chartId = useId();
   const theme = useTheme();
 
   return (
-    <BarChart
-      width={800}
-      height={400}
-      data={data}
-      margin={{
-        top: 16,
-        right: 16,
-        bottom: 0,
-        left: 24,
-      }}
+    <ResponsiveContainer
+      width="100%"
+      height="100%"
+      minWidth="300px"
+      minHeight="400px"
+      id="responsiveCashFlowChartContainer"
     >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" style={theme.typography.body2} />
-      <YAxis style={theme.typography.body2}>
-        <Label
-          value={"ETH"}
-          angle={270}
-          position="left"
-          style={{
-            textAnchor: "middle",
-            fill: theme.palette.text.primary,
-            ...theme.typography.body1,
-          }}
-        />
-      </YAxis>
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="income" fill="#32a852" />
-      <Bar dataKey="outcome" fill="#b03854" />
-      <Bar dataKey="balance" fill="#8884d8" />
-    </BarChart>
+      <BarChart
+        id="cashflowChart"
+        data={data}
+        margin={{
+          top: 16,
+          right: 16,
+          bottom: 0,
+          left: 24,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" style={theme.typography.body2} />
+        <YAxis style={theme.typography.body2}>
+          <Label
+            value={"ETH"}
+            angle={270}
+            position="left"
+            style={{
+              textAnchor: "middle",
+              fill: theme.palette.text.primary,
+              ...theme.typography.body1,
+            }}
+          />
+        </YAxis>
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="income" fill="#32a852" />
+        <Bar dataKey="outcome" fill="#b03854" />
+        <Bar dataKey="balance" fill="#8884d8" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 

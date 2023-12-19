@@ -14,7 +14,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { BeneficiaryDetails } from "@/app/models/BeneficiaryDetails";
 import { weiToEth } from "@/app/utils/converters";
-
+import styles from "../../page.module.css";
 interface Props {
   params: {
     beneficiary: string;
@@ -48,8 +48,7 @@ const BeneficiaryPage = async ({ params }: Props) => {
         <CardMedia
           component="div"
           sx={{
-            // 16:9
-            pt: "56.25%",
+            pt: "40%",
           }}
           image={beneficiary.image}
           title="organization image"
@@ -110,6 +109,13 @@ const BeneficiaryPage = async ({ params }: Props) => {
             </Grid>
           </Container>
           <Container maxWidth="md" sx={{ marginTop: "20px" }}>
+            <Typography
+              variant="body1"
+              sx={{ marginTop: "20px" }}
+              className={styles.description1}
+            >
+              The charts below contain mock data.
+            </Typography>
             <Typography variant="h5" align="center" marginTop="30px">
               Cash flow
             </Typography>

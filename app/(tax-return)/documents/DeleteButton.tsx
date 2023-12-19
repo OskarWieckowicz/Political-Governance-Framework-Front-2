@@ -4,9 +4,11 @@ import React from "react";
 import { DocumentData } from "@/app/models/DocumentData";
 import { Box, IconButton } from "@mui/material";
 import { deleteDocumentAction } from "./actions";
+
 interface Props {
   documentData: DocumentData;
 }
+
 const DeleteButton = (props: Props) => {
   const { documentData } = props;
 

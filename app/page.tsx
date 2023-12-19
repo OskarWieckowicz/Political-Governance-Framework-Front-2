@@ -59,7 +59,7 @@ export default async function Home() {
         </Typography>
         {functionalities.map((functionality) => {
           return (
-            <Link href={functionality.link}>
+            <Link href={functionality.link} key={functionality.title}>
               <Box className={styles.description2}>
                 <Typography
                   variant="h5"

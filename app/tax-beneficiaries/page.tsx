@@ -55,7 +55,8 @@ const TaxBeneficiariesPage = async () => {
           paragraph
         >
           Below are all public organizations and ministries you can support with
-          your taxes.
+          your taxes. Once a month, you can assess your satisfaction with the
+          work of individual institutions.
         </Typography>
       </Container>
       <Container sx={{ py: 8 }} maxWidth="md">
