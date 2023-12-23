@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   Container,
   Paper,
   Table,
@@ -48,10 +49,10 @@ const HistoryPage = async () => {
       >
         Tax return history
       </Typography>
-      <Typography variant="body1" style={{ marginBottom: "15px" }}>
+      <Alert severity="info" sx={{ marginBottom: "15px" }}>
         Every month you have to fill your tax return. Here you can find
         historial data of your tax return declarations.
-      </Typography>
+      </Alert>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>

@@ -49,13 +49,7 @@ const DownloadButton = (props: Props) => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-      }}
-    >
-      {documentData.fileName}
+    <Box>
       <IconButton onClick={(e) => handleDownloadClick(e)}>
         <FileDownloadIcon />
       </IconButton>

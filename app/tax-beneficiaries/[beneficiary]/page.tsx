@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   Card,
   CardContent,
   CardMedia,
@@ -14,7 +15,6 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { BeneficiaryDetails } from "@/app/models/BeneficiaryDetails";
 import { weiToEth } from "@/app/utils/converters";
-import styles from "../../page.module.css";
 interface Props {
   params: {
     beneficiary: string;
@@ -88,6 +88,7 @@ const BeneficiaryPage = async ({ params }: Props) => {
                   href={`${process.env.NEXT_ETHERSCAN_URL}${beneficiary.smartContractAddress}`}
                   underline="none"
                   target="_blank"
+                  sx={{ wordBreak: "break-all" }}
                 >
                   {beneficiary.smartContractAddress}
                 </Link>
@@ -109,13 +110,9 @@ const BeneficiaryPage = async ({ params }: Props) => {
             </Grid>
           </Container>
           <Container maxWidth="md" sx={{ marginTop: "20px" }}>
-            <Typography
-              variant="body1"
-              sx={{ marginTop: "20px" }}
-              className={styles.description1}
-            >
+            <Alert severity="info" sx={{ marginTop: "20px" }}>
               The charts below contain mock data.
-            </Typography>
+            </Alert>
             <Typography variant="h5" align="center" marginTop="30px">
               Cash flow
             </Typography>

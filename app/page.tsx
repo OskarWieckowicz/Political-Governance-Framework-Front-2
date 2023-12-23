@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { Box, Container, Paper, Stack, Typography } from "./mui/mui";
+import { Box, Button, Container, Paper, Stack, Typography } from "./mui/mui";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { ArrowForward } from "./mui/mui-icons";
@@ -37,14 +37,9 @@ export default async function Home() {
   ];
   return (
     <Container>
-      <Stack marginTop="20px" spacing={2} marginBottom="20px">
+      <Stack marginTop="20px" spacing={2} marginBottom="30px">
         <Typography variant="h3">Welcome !</Typography>
-        <Typography
-          variant="h6"
-          color="text.secondary"
-          paragraph
-          className={styles.description1}
-        >
+        <Typography variant="body1" paragraph>
           The website you are on is a proposal for a new tax payment system.
           This application implements the Political Governance Framework - a tax
           payment system based on blockchain technology that introduces
@@ -54,26 +49,22 @@ export default async function Home() {
           faster through the distribution of your taxes. To read more about
           Political Governance Framework you can read whitepaper here:
         </Typography>
-        <Typography variant="h4">
-          Here are some core functionalities:
-        </Typography>
+        <Typography variant="h4">Here are some core functionalities</Typography>
         {functionalities.map((functionality) => {
           return (
-            <Link href={functionality.link} key={functionality.title}>
-              <Box className={styles.description2}>
-                <Typography
-                  variant="h5"
-                  display="flex"
-                  alignItems="center"
-                  sx={{ color: "blue" }}
-                >
-                  {functionality.title} <ArrowForward />
-                </Typography>
-                <Typography variant="body1">
-                  {functionality.description}
-                </Typography>
-              </Box>
-            </Link>
+            <Box
+              component={Paper}
+              sx={{ padding: "10px", marginBottom: "15px" }}
+            >
+              <Link href={functionality.link}>
+                <Button size="large" endIcon={<ArrowForward />}>
+                  {functionality.title}
+                </Button>
+              </Link>
+              <Typography variant="body1" marginLeft="10px">
+                {functionality.description}
+              </Typography>
+            </Box>
           );
         })}
       </Stack>

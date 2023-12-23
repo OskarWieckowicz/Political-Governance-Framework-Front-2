@@ -160,6 +160,12 @@ const PaymentView = () => {
           Metamask not found!
         </Alert>
       </Snackbar>
+      <Alert severity="info" sx={{ marginBottom: "15px" }}>
+        Based on your tax return and distribution, we've calculated your
+        obligations. Please click the 'PAY' button to initiate an ETH transfer
+        to the designated institution. Metamask wallet is required. After making
+        the payment, allow a few minutes for the balance to refresh.
+      </Alert>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>

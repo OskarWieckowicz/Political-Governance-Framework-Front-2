@@ -6,7 +6,8 @@ interface Props {
 }
 
 const TaxReturnLayout = ({ children }: Props) => {
-  return <ClippedDrawer>{children}</ClippedDrawer>;
+  // return <ClippedDrawer>{children}</ClippedDrawer>;
+  return children;
 };
 
 export default TaxReturnLayout;

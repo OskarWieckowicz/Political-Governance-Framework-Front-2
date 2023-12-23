@@ -1,5 +1,6 @@
 import { Declaration } from "@/app/models/Declaration";
 import {
+  Alert,
   Box,
   Button,
   CardActions,
@@ -17,6 +18,11 @@ export const SubmittedDeclarationView = (props: Props) => {
   return (
     <>
       <CardContent>
+        <Alert severity="info" sx={{ marginBottom: "15px" }}>
+          Your tax return declaration for the previous month has been submitted.
+          If you need to make any corrections, please use the button below. You
+          can proceed to the 'Payment' tab to fulfill your tax obligations.
+        </Alert>
         <Typography gutterBottom variant="h6">
           Your declaration:
         </Typography>
@@ -63,10 +69,10 @@ export const SubmittedDeclarationView = (props: Props) => {
             mb: 2,
           }}
         >
-          <Typography variant="h4" marginRight="20px">
+          <Typography variant="h6" marginRight="20px">
             Taxes to pay (12%):
           </Typography>
-          <Typography color="#2eeb21" variant="h4">
+          <Typography color="#2eeb21" variant="h6">
             {declaration?.taxes}
           </Typography>
         </Box>

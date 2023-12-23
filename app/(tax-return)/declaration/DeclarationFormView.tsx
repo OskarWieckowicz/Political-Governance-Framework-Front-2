@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   CardActions,
@@ -24,14 +25,14 @@ const DeclarationFormView = (props: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <CardContent>
-        <Typography variant="body1" sx={{ marginBottom: "15px" }}>
+        <Alert severity="info" sx={{ marginBottom: "15px" }}>
           To submit tax return you need to specifying your total income and
           expense for the previous month. Automatic calculation of the sum of
           revenues and expenses based on attached documents has not been
           implemented and you have to do it manually. Based on provided numbers
           the tax to pay will be calculated. the process resembles the
           settlement of running a sole proprietorship in Poland.
-        </Typography>
+        </Alert>
         <Typography gutterBottom variant="h6">
           Please provide your revenue and expense:
         </Typography>
