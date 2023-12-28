@@ -11,6 +11,7 @@ import {
   Box,
   Typography,
   InputAdornment,
+  Alert,
 } from "../mui/mui";
 import { TaxDistribution } from "../models/TaxDistribution";
 
@@ -45,6 +46,13 @@ const TaxesDistibutionForm = (props: Props) => {
       <Card>
         <CardHeader title={`Chose tax distrubution`} />
         <CardContent>
+          <Alert severity="info" sx={{ marginBottom: "20px" }}>
+            Below is a list of institutions along with the percentage of your
+            total tax liabilities. You can leave the default values ​​or adjust
+            them to your needs. Remember that the sum of the percentages must
+            equal 100%. Think carefully about your choice, because you cannot
+            withdraw the distribution and can only change it next month.
+          </Alert>
           <Grid container spacing={2}>
             {initialValues.map((item, index) => (
               <Grid item xs={2} key={index}>
