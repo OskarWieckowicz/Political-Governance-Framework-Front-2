@@ -41,7 +41,8 @@ const DocumentsPage = async () => {
       <Alert severity="info" sx={{ marginBottom: "20px" }}>
         Please submit documents and invoices verifying your income and expenses
         from the previous month. Ensure each document specifies whether it
-        represents "Revenue" or "Expense" along with the corresponding amount.
+        represents &quot;Revenue&quot; or &quot;Expense&quot; along with the
+        corresponding amount.
       </Alert>
       <AddDocument />
       <TableContainer component={Paper}>

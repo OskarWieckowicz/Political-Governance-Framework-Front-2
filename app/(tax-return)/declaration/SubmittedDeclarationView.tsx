@@ -21,7 +21,8 @@ export const SubmittedDeclarationView = (props: Props) => {
         <Alert severity="info" sx={{ marginBottom: "15px" }}>
           Your tax return declaration for the previous month has been submitted.
           If you need to make any corrections, please use the button below. You
-          can proceed to the 'Payment' tab to fulfill your tax obligations.
+          can proceed to the &apos;Payment&apos; tab to fulfill your tax
+          obligations.
         </Alert>
         <Typography gutterBottom variant="h6">
           Your declaration:

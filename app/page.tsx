@@ -53,6 +53,7 @@ export default async function Home() {
         {functionalities.map((functionality) => {
           return (
             <Box
+              key={functionality.title}
               component={Paper}
               sx={{ padding: "10px", marginBottom: "15px" }}
             >
