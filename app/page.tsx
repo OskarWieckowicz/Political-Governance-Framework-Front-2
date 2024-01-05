@@ -40,14 +40,23 @@ export default async function Home() {
       <Stack marginTop="20px" spacing={2} marginBottom="30px">
         <Typography variant="h3">Welcome !</Typography>
         <Typography variant="body1" paragraph>
-          The website you are on is a proposal for a new tax payment system.
-          This application implements the Political Governance Framework - a tax
-          payment system based on blockchain technology that introduces
-          transparency in the budget of state bodies using public funds, making
-          it easier to detect abuses and corruption of these bodies. As a payer,
-          you are able to decide which sectors of public life will develop
-          faster through the distribution of your taxes. To read more about
-          Political Governance Framework you can read whitepaper here:
+          This project is for demonstration purposes only. The website you are
+          on is a proposal for a new tax payment system. This application
+          implements the Political Governance Framework - a tax payment system
+          based on blockchain technology that introduces transparency in the
+          budget of state bodies using public funds, making it easier to detect
+          abuses and corruption of these bodies. As a payer, you are able to
+          decide which sectors of public life will develop faster through the
+          distribution of your taxes. To read more about Political Governance
+          Framework go to white paper:{" "}
+          <Typography
+            component="a"
+            href="https://presentation.political-governance-framework.com"
+            target="_blank"
+            sx={{ color: "#1976d2" }}
+          >
+            https://presentation.political-governance-framework.com
+          </Typography>
         </Typography>
         <Typography variant="h4">Here are some core functionalities</Typography>
         {functionalities.map((functionality) => {

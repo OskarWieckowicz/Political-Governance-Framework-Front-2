@@ -163,7 +163,10 @@ export default function Navbar(props: Props) {
                 </Collapse>
               </>
             ) : (
-              <ListItemButton onClick={(e) => handlePageNav(page.link)}>
+              <ListItemButton
+                selected={pathName === page.link}
+                onClick={(e) => handlePageNav(page.link)}
+              >
                 <ListItemIcon>{page.icon}</ListItemIcon>
                 <ListItemText primary={page.label} />
               </ListItemButton>
