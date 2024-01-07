@@ -109,7 +109,7 @@ const PaymentView = () => {
         );
 
         const tx = await contract.pay(profile.taxId, {
-          value: toBePaidInWei,
+          value: toBePaidInWei.toString(),
         });
 
         await tx.wait();
@@ -192,7 +192,7 @@ const PaymentView = () => {
                 <TableCell align="center">{weiToEth(row.leftToPay)}</TableCell>
                 <TableCell align="center">
                   <Button
-                    disabled={row.leftToPay == BigInt(0)}
+                    disabled={row.leftToPay <= BigInt(100)}
                     onClick={() =>
                       payTax(session, row.leftToPay, row.contractAddress)
                     }
